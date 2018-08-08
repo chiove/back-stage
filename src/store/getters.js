@@ -1,0 +1,1 @@
+export const titleApi = state => state.titleApi 

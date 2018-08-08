@@ -1,0 +1,1 @@
+export const SET_TITLE_API = 'SET_TITLE_API'

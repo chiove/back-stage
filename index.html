@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
+  <title>云华开放平台</title>
+  <script type="text/javascript" src="static/config.js"></script>
+  <script type="text/javascript">
+  	console.log(g)
+	window.REQUEST_URL = config.url
+	console.log(window.REQUEST_URL)
+  </script>
+</head>
+<style>
+	*{
+		padding: 0;
+		margin: 0;
+	}
+	html,body{
+		height: 100%;
+	}
+	@media screen and (min-width: 1920px) {
+		html {
+			font-size: 110px
+		}
+	}
+	@media screen and (min-width:1680px) and (max-width:1920px) {
+		html {
+			font-size: 100px
+		}
+	}
+	@media screen and (min-width:1440px) and (max-width:1680px) {
+		html {
+			font-size: 90px
+		}
+	}
+	@media screen and (min-width:1280px) and (max-width:1440px){
+		html {
+			font-size: 80px
+		}
+	}
+	@media screen and (min-width:1024px) and (max-width:1280px){
+		html {
+			font-size: 70px
+		}
+	}
+	@media screen and (max-width:1024px){
+		html {
+			font-size: 70px
+		}
+	}
+	/*element-ui 修改tree默认样式*/
+	.el-table td, .el-table th{
+		padding: 0 !important
+	}
+    .el-table .cell, .el-table th>div{
+        text-align: center !important;
+    }
+    .el-table th>.cell{
+        height: .4rem;
+        line-height: .4rem !important;
+        background-color: #F1F3F7 !important;
+    }
+    .el-table .cell{
+        height: .36rem;
+        line-height: .36rem !important;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: normal;
+    }
+	.el-button{
+		padding:0 !important;
+	}
+	.el-tabs__item:hover {
+	    color: #224B95 !important;
+	    cursor: pointer;
+	}
+	.el-tabs__item.is-active {
+	    color: #224B95 !important;
+	}
+	.el-tabs__active-bar{
+	    background-color: #224B95 !important;
+	}
+</style>
+<body>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+
+</body>
+</html>
