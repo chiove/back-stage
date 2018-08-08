@@ -2,9 +2,11 @@
   <div class="left">
     <div class="left_list">
       <ul>
-        <li><router-link to="/apiMan">接口管理</router-link></li>
-        <li><router-link to="/newApi">新建接口</router-link></li>
-        <li><router-link to="/checkedApi">应用查看</router-link></li>
+        <li><router-link to="/index/dailyData">每日数据</router-link></li>
+        <li><router-link to="/index/weekData">每周数据</router-link></li>
+        <li><router-link to="/index/studentsCare">学生关怀</router-link></li>
+        <li><router-link to="/index/studentsSearch">学生考勤查询</router-link></li>
+        <li><router-link to="/index/teacherCheck">辅导员查寝签到</router-link></li>
       </ul>
     </div>
     <div class="right_list">
@@ -40,9 +42,11 @@
   box-sizing: border-box;
 }
 .right_list{
-  width: calc(100% - 1.2rem);    
-  overflow: hidden;
-}   
+  flex: auto;
+  padding: .18rem .24rem;
+  /*width: calc(100% - 1.2rem);*/
+  /*overflow: hidden;*/
+}
 .left_list ul{
   padding:0;
 }

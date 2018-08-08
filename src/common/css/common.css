@@ -1,0 +1,29 @@
+div{
+  box-sizing: border-box;
+}
+.body-container{
+  width: 100%;
+}
+.tool-bar-container,.tool-bar-container-border{
+  font-size:.14rem;
+  font-family:MicrosoftYaHei-Bold;
+  color:rgba(85,85,85,1);
+  height: .4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tool-bar-container-border{
+  border-bottom: .01rem solid #2184C5;
+}
+.tool-bar-search-babel{
+  font-size:.12rem;
+  font-family:MicrosoftYaHei;
+  color:rgba(85,85,85,1);
+  margin-right: .09rem;
+}
+.tool-bar-form{
+  width:1.54rem;
+  height:.24rem;
+  border-radius:3px;
+}

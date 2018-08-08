@@ -10,42 +10,30 @@ export default new Router({
     },
     {
       path: '/index',
-      // redirect:'/apiMan',
+      redirect:'/index/dailyData',
       component: resolve => require(['@/components/contain/index'],resolve),
-      // children:[
-      //   {// 接口管理
-      //     path: '/apiMan',
-      //     component: resolve => require(['@/components/containRight/api_management/api_management'],resolve),
-      //     children:[
-      //   {
-      //     path: '/apiMan/detail',
-      //     component: resolve => require(['@/components/containRight/api_management/api_m_detail'],resolve),
-      //     children:[
-      //       {
-      //         path:'/apiMan/detail/auth',
-      //         component: resolve => require(['@/components/containRight/api_management/api_authorized_detail'],resolve),
-      //       }
-      //     ]
-      //   },
-      //   // {
-      //   //   path:'/apiMan/auth',
-      //   //   component: resolve => require(['@/components/containRight/api_management/api_authorized_detail'],resolve),
-      //   // }
-      // ]
-      // },
-      // {// 应用分类
-      //   path: '/newApi',
-      //   // redirect:'/newApi/newCreated_api', 
-      //   component: resolve => require(['@/components/containRight/newCreated_api/newCreated_api'],resolve),
-      //   // children:[
-      //   //     ]
-      // },{
-      //   path:'/checkedApi',
-      //   component: resolve => require(['@/components/containRight/checked_api/checked_api'],resolve),
-
-      // }
-      // ] 
-  }
+      children:[
+      {
+        path: '/index/dailyData',
+        component: resolve => require(['@/components/containFrame/dailyData'],resolve),
+      },
+      {
+        path: '/index/weekData',
+        component: resolve => require(['@/components/containFrame/weekData'],resolve),
+      },
+      {
+        path: '/index/studentsCare',
+        component: resolve => require(['@/components/containFrame/studentsCare'],resolve),
+      },
+      {
+        path: '/index/studentsSearch',
+        component: resolve => require(['@/components/containFrame/studentsSearch'],resolve),
+      },
+      {
+        path: '/index/teacherCheck',
+        component: resolve => require(['@/components/containFrame/teacherCheck'],resolve),
+      }]
+    },
   ]
 })
 
