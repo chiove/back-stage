@@ -44,6 +44,7 @@
 .right_list{
   flex: auto;
   padding: .18rem .24rem;
+  overflow: auto;
   /*width: calc(100% - 1.2rem);*/
   /*overflow: hidden;*/
 }

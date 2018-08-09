@@ -3,6 +3,7 @@ div{
 }
 .body-container{
   width: 100%;
+  min-width: 12.80rem;
 }
 .tool-bar-container,.tool-bar-container-border{
   font-size:.14rem;
@@ -26,4 +27,17 @@ div{
   width:1.54rem;
   height:.24rem;
   border-radius:3px;
+}
+.input-with-select{
+  width: 1.93rem;
+}
+.tool-bar-search-select{
+  width: 1.44rem;
+}
+.daily-data-table-container{
+  margin-top: .1rem;
+}
+.daily-data-pagination-container{
+  margin-top: .1rem;
+  text-align: right;
 }
