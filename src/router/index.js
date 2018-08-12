@@ -32,7 +32,12 @@ export default new Router({
       {
         path: '/index/teacherCheck',
         component: resolve => require(['@/components/containFrame/teacherCheck'],resolve),
-      }]
+      },
+      {
+        path: '/index/studentsDetails',
+        component: resolve => require(['@/components/containFrame/studentsDetails'],resolve),
+      }
+      ]
     },
   ]
 })

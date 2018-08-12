@@ -98,6 +98,7 @@
 </template>
 
 <script>
+  require('echarts/theme/macarons');
   export default {
     name: "dailyData",
     mounted:function(){
@@ -155,7 +156,7 @@
         console.log(`当前页: ${val}`);
       },
       drawRing:function () {
-        let dataChartRing = this.$echarts.init(document.getElementById('data-chart-ring'))
+        let dataChartRing = this.$echarts.init(document.getElementById('data-chart-ring'),'macarons')
         dataChartRing.setOption({
           title: { text: '本周各考勤人次占比' },
           tooltip: {
@@ -203,7 +204,7 @@
           })
       },
       drawLine:function () {
-        let dataChartLine = this.$echarts.init(document.getElementById('data-chart-line'))
+        let dataChartLine = this.$echarts.init(document.getElementById('data-chart-line'),'macarons')
         dataChartLine.setOption({
           title: {
             text: '折线图堆叠'
