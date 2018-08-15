@@ -7,10 +7,12 @@
               范围选择
             </span>
             <el-date-picker
-              v-model="value"
+              v-model="searchDateValue"
               type="date"
               size="mini"
-              placeholder="选择日期">
+              placeholder="选择日期"
+              :picker-options="pickerOptions0"
+            >
             </el-date-picker>
           </div>
         </div>
@@ -81,27 +83,23 @@
         </div>
       </div>
       <div class="daily-data-table-container">
-        <el-table
-          :data="tableData"
-          style="width: 100%"
-          :default-sort = "{prop: 'date', order: 'descending'}"
-        >
-          <el-table-column
-            prop="date"
-            label="日期"
-            sortable
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="姓名"
-            sortable
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="地址"
-            :formatter="formatter">
+        <el-table :data="tableData" style="width: 100%" :default-sort = "{prop: 'name', order: 'descending'}">
+          <el-table-column prop="name" label="姓名" sortable></el-table-column>
+          <el-table-column prop="studentCode" label="学号" sortable></el-table-column>
+          <el-table-column prop="className" label="班级" sortable></el-table-column>
+          <el-table-column prop="collegeName" label="学院名称" sortable></el-table-column>
+          <el-table-column prop="majorName" label="专业名称" sortable></el-table-column>
+          <el-table-column prop="instructorName" label="辅导员" sortable></el-table-column>
+          <el-table-column prop="buildingName" label="宿舍楼栋" sortable></el-table-column>
+          <el-table-column prop="dormitoryName" label="寝室号" sortable></el-table-column>
+          <el-table-column prop="bedCode" label="床号" sortable></el-table-column>
+          <el-table-column prop="clockStatus" label="昨日考勤状态"></el-table-column>
+          <el-table-column prop="continuousStayoutDays" label="连续未归天数" sortable></el-table-column>
+          <el-table-column prop="continuousStayoutLateDays" label="连续晚归天数" sortable></el-table-column>
+          <el-table-column label="个人详情">
+            <template slot-scope="scope">
+              <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -121,15 +119,24 @@
 
 <script>
   import axios from '../../common/js/axios'
+  import getDate from '../../common/js/tools'
     export default {
       name: "dailyData",
       mounted:function(){
-
+        const newDate = getDate.getCurrentTime('date')
+        const yesterday = `${newDate.year}-${newDate.month}-${newDate.day-1}`
+        this.searchDateValue = yesterday
       },
       data(){
           return {
+            pickerOptions0: {
+              disabledDate(time) {
+                return time.getTime() > Date.now() - 8.64e5
+              }
+            },
+            searchDateValue:'',
             data:{},
-            value:'',
+            value:'2018-08-14',
             currentPage:1,
             search:'',
             options: [{
@@ -150,11 +157,11 @@
             }],
             tableData: [{
               date: '2016-05-02',
-              name: '王小虎',
+              name: 'sdffs',
               address: '上海市普陀区金沙江路 1518 弄'
             }, {
               date: '2016-05-04',
-              name: '王小虎',
+              name: '1111',
               address: '上海市普陀区金沙江路 1517 弄'
             }, {
               date: '2016-05-01',
@@ -168,6 +175,9 @@
           }
       },
       methods: {
+        handleClick(row) {
+          console.log(row);
+        },
         formatter(row, column) {
           return row.address;
         },

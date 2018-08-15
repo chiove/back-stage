@@ -52,30 +52,7 @@
   2、大屏监控模块接口-大屏幕文案 GET /big-screen-monitor/copy-writing
   3、大屏监控模块接口-二维码图片 GET /big-screen-monitor/qrcode-image
 
-每日数据页面
-  1、下拉数据查询接口-根据用户ID查询学院列表 GET /select-data/secondary-college/query-by-user
-  2、晚归考勤分析模块接口-每日异常数据统计 GET /analysis/exeception-stat-by-day 拿到昨日晚归昨日未归数据
-  3、晚归考勤分析模块接口-每日异常数据分页查询 GET /analysis/exeception-clock-by-day  总数从里面拿
-  4、下拉数据查询接口-专业信息 GET /select-data/major-info/all  可以根据院系来查，或者查全部的。
-  5、下拉数据查询接口-查询辅导员列表 GET /select-data/instructor-info/all 根据院系，专业来查辅导员，参数都可以不填。
 
-每周数据页面
-  1、晚归考勤分析模块接口-每周异常数据统计 GET /analysis/exeception-stat-by-week
-  2、晚归考勤分析模块接口-每周异常数据列表统计 GET /analysis/exeception-stat-by-day-of-week  趋势图用
-  3、晚归考勤分析模块接口-每日异常数据分页查询 GET /analysis/exeception-clock-by-week
-
-学生关怀页面
-  1、学生关怀模块接口-分页获取可发起关怀列表 GET /analysis/care/can-start
-  2、学生关怀模块接口-分页获取已发起/已处理关怀列表 GET /analysis/student-care
-  3、学生关怀模块接口-发起学生关怀 POST /analysis/start-student-care
-  4、学生关怀模块接口-撤销学生关怀 PUT /analysis/delete-student-care
-
-学生考勤查询
-  1、后台-考勤数据复核模块接口-数据复核分页查询 GET /data-recheck/student-clock-care-stat
-
-
-辅导员查寝签到
-  1、辅导员操作接口-辅导员查寝签到-分页获取辅导员打卡统计 GET /analysis/instructor-stat
 
 PC个人详情页
   1、学生操作接口-根据学生ID查询学生基本信息 GET /student/{id}
