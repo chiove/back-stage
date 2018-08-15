@@ -120,12 +120,11 @@
 </template>
 
 <script>
-  import ajax from '../../common/js/axiosApi'
+  import axios from '../../common/js/axios'
     export default {
       name: "dailyData",
       mounted:function(){
-        this.data = ajax.dailyDataSearch({a:1});
-        console.log(this.data)
+
       },
       data(){
           return {
