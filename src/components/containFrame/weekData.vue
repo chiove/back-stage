@@ -6,17 +6,19 @@
         <span class="tool-bar-search-babel">
           范围选择
         </span>
-        <el-date-picker
-          v-model="value"
-          type="date"
-          size="mini"
-          placeholder="选择日期">
-        </el-date-picker>
+        <el-select v-model="weekValue" placeholder="周选择" ref="weekDom" @change="weekEventFun" size="mini" class="tool-bar-search-select">
+          <el-option
+            v-for="item in weekListData"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </div>
     </div>
     <div class="daily-data-banner-container">
       <div class="daily-data-banner-title">
-        XXXXXXXX学院
+        {{collegeNames}}
       </div>
       <div class="data-chart-container">
         <div class="data-chart-ring" id="data-chart-ring"></div>
@@ -26,72 +28,67 @@
     <div class="tool-bar-container">
       <div>
         <span class="daily-data-table-title">学生异常状态列表</span>
-        <span>合计400人</span>
+        <span>合计{{studentsTotal}}人</span>
       </div>
       <div>
-        <el-select v-model="value" placeholder="全部学院" size="mini" class="tool-bar-search-select">
+        <el-select v-model="collegeListDataValue" @change="collegeSelectFun" ref="collegeValue" placeholder="全部学院" size="mini" class="tool-bar-search-select">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in collegeListData"
+            :key="item.collegeId"
+            :label="item.collegeName"
+            :value="item.collegeId">
           </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="全部专业" size="mini" class="tool-bar-search-select">
+        <el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in majorListData"
+            :key="item.majorId"
+            :label="item.majorName"
+            :value="item.majorId">
           </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
+        <el-select v-model="instructorListDataValue" ref="instructorValue" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in instructorListData"
+            :key="item.userId"
+            :label="item.name"
+            :value="item.userId">
           </el-option>
         </el-select>
-        <el-input placeholder="请输入学号/姓名搜索" v-model="value" class="input-with-select" size="mini">
+        <el-input placeholder="请输入学号/姓名搜索" ref="studentNameDom" v-model="studentNameValue" class="input-with-select" size="mini">
         </el-input>
-        <el-button type="primary" icon="el-icon-search" size="mini">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="searchSubmitFun">搜索</el-button>
       </div>
     </div>
     <div class="daily-data-table-container">
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        :default-sort = "{prop: 'date', order: 'descending'}"
-      >
-        <el-table-column
-          prop="date"
-          label="日期"
-          sortable
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          sortable
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="地址"
-          :formatter="formatter">
+      <el-table :data="tableData" @sort-change="sortChange1" style="width: 100%">
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="studentCode" label="学号"></el-table-column>
+        <el-table-column prop="className" label="班级"></el-table-column>
+        <el-table-column prop="collegeName" label="学院名称"></el-table-column>
+        <el-table-column prop="majorName" label="专业名称"></el-table-column>
+        <el-table-column prop="instructorName" label="辅导员"></el-table-column>
+        <el-table-column prop="buildingName" label="宿舍楼栋"></el-table-column>
+        <el-table-column prop="dormitoryName" label="寝室号"></el-table-column>
+        <el-table-column prop="bedCode" label="床号"></el-table-column>
+        <el-table-column prop="clockStatus" label="昨日考勤状态"></el-table-column>
+        <el-table-column prop="stayoutDays" label="周未归次数" sortable="custom"></el-table-column>
+        <el-table-column prop="stayoutLateDays" label="周晚归次数" sortable="custom"></el-table-column>
+        <el-table-column label="个人详情">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="daily-data-pagination-container">
       <el-pagination
         background
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-size="100"
+        :current-page.sync="pageNo"
+        :page-size="10"
         layout="prev, pager, next, jumper"
-        :total="1000">
+        :total="pageTotal">
       </el-pagination>
     </div>
   </div>
@@ -102,60 +99,93 @@
   export default {
     name: "dailyData",
     mounted:function(){
-      this.drawRing()
-      this.drawLine()
+      /*获取周数下拉列表*/
+      this.getWeekListData()
+      /*默认渲染环形图*/
+      this.getRingChartData(this.weekValue)
+      /*默认渲染折线图*/
+      this.getLineChartData(this.weekValue)
+      /*学院查询*/
+      this.getCollegeListData()
+      /*表格渲染*/
+      this.getTableData({weekNumber:this.weekValue})
     },
     data(){
       return {
-        value:'',
-        currentPage:1,
-        search:'',
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+        userId:1,/*用户ID*/
+        weekValue:1,/*周数下拉列表默认值*/
+        weekListData:[{value:1,label:'第一周'}],/*周数下拉列表*/
+        collegeNames:'全部学院',/*学院名称*/
+        studentsTotal:0,/*周异常人数统计*/
+        collegeListDataValue:'',/*学院下拉列表默认值*/
+        collegeListData:[],/*学院下拉列表*/
+        majorListDataValue:'',/*专业下拉列表默认值*/
+        majorListData:[],/*专业下拉列表*/
+        instructorListDataValue:'',/*辅导员下拉列表默认值*/
+        instructorListData:[],/*辅导员下拉列表*/
+        studentNameValue:'',/*学号，姓名默认值*/
+        pageNo:1,/*当前页数*/
+        pageTotal:1,/*总页数*/
+        tableData: []/*表格数据*/
       }
     },
     methods: {
-      formatter(row, column) {
-        return row.address;
+      /*获取周数下拉列表*/
+      getWeekListData:function(){
+       const _this = this
+        this.$axios.get('/api/select-data/week-info/all')
+          .then(function (res) {
+            let listItem = {}
+          for (let week=1;week<res.data.data.weekNumber.length;week++)
+          {
+            listItem.value = week
+            listItem.label = `第${week}周`
+            _this.weekListData.push(week)
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+      /*周选择后触发事件*/
+      weekEventFun:function(data){
+        this.weekValue = data
+        /*默认渲染环形图*/
+        this.getRingChartData(data)
+        /*默认渲染折线图*/
+        this.getLineChartData(data)
+        /*表格渲染*/
+        this.getTableData({weekNumber:data})
       },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+      /*查询环形图数据*/
+      getRingChartData:function(weekNumber,orgId){
+        const _this = this
+        this.$axios.get('/api/analysis/exeception-stat-by-week',{params:{weekNumber :weekNumber,orgId:orgId}
+        }).then(function (res) {
+            /*渲染环形图*/
+            _this.drawRing(res.data.data.weekNormalNum,res.data.data.weekStayoutLateNum,res.data.data.weekStayoutNum)
+        }).catch(function (error) {
+          console.log(error)
+        })
       },
-      drawRing:function () {
+      /*查询折线图数据*/
+      getLineChartData:function(weekNumber,orgId){
+        const _this = this
+        this.$axios.get('/api/analysis/exeception-stat-by-day-of-week',{params:{weekNumber :weekNumber,orgId:orgId}
+        }).then(function (res) {
+          /*渲染折线图*/
+          let dateArray=[],stayOutLateArray=[],stayOutArray=[]
+          res.data.data.forEach(function (item,index) {
+            dateArray.push(`${item.date.getMonth()+1}/${item.date.getDate()}`)
+            stayOutLateArray.push(item.stayoutLateNum)
+            stayOutArray.push(item.stayoutNum)
+          })
+         this.drawLine(dateArray,stayOutLateArray,stayOutArray)
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      /*渲染环形图*/
+      drawRing:function (weekNormalNum,weekStayoutLateNum,weekStayoutNum) {
         let dataChartRing = this.$echarts.init(document.getElementById('data-chart-ring'),'macarons')
         dataChartRing.setOption({
           title: { text: '本周各考勤人次占比' },
@@ -166,7 +196,7 @@
           legend: {
             orient: 'vertical',
             x: 'right',
-            data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+            data:['到勤','晚归','未归']
           },
           series: [
             {
@@ -193,17 +223,16 @@
                 }
               },
               data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:1548, name:'搜索引擎'}
+                {value:weekNormalNum, name:'到勤'},
+                {value:weekStayoutLateNum, name:'晚归'},
+                {value:weekStayoutNum, name:'未归'},
               ]
             }
           ]
           })
       },
-      drawLine:function () {
+      /*渲染折线图*/
+      drawLine:function (dateArray,stayOutLateArray,stayOutArray) {
         let dataChartLine = this.$echarts.init(document.getElementById('data-chart-line'),'macarons')
         dataChartLine.setOption({
           title: {
@@ -224,26 +253,133 @@
           xAxis: {
             type: 'category',
               boundaryGap: false,
-              data: ['周一','周二','周三','周四','周五','周六','周日']
+              data: dateArray
           },
           yAxis: {
             type: 'value'
           },
           series: [
             {
-              name:'邮件营销',
+              name:'晚归',
               type:'line',
               stack: '总量',
-              data:[120, 132, 101, 134, 90, 230, 210]
+              data:stayOutLateArray
             },
             {
               name:'联盟广告',
               type:'line',
-              stack: '总量',
-              data:[220, 182, 191, 234, 290, 330, 310]
+              stack: '未归',
+              data:stayOutArray
             }
           ]
         })
+      },
+      /*查询学院下拉列表*/
+      getCollegeListData:function(){
+        const _this = this
+        this.$axios.get('/api/select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
+        }).then(function (res) {
+          _this.collegeListData = res.data.data
+          _this.collegeListData = [{collegeId:'1',collegeName:'传媒学院'},{collegeId:'2',collegeName:'舞蹈学院'}]
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      /*学院下拉选择后触发事件*/
+      collegeSelectFun:function(data){
+        const _this = this
+        this.collegeListData.forEach(function (item,index) {
+          if(item.collegeId===data){
+            _this.collegeNames = item.collegeName
+            /*默认渲染环形图*/
+            this.getRingChartData(_this.weekValue,item.collegeId)
+            /*默认渲染折线图*/
+            this.getLineChartData(_this.weekValue,item.collegeId)
+          }
+        })
+        /*查询专业下拉列表*/
+        this.$axios.get('/api/select-data/major-info/all',{params:{orgId:data}
+        }).then(function (res) {
+          _this.majorListData = res.data.data
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      /*专业下拉选择后触发事件*/
+      majorSelectFun:function(data){
+        const _this = this
+        const params = {
+          majorId:this.$refs.collegeValue.value,
+          orgId:data
+        }
+        this.$axios.get('/api/select-data/instructor-info/all',{params:params
+        }).then(function (res) {
+          _this.instructorListData = res.data.data
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      /*搜索按钮搜索*/
+      searchSubmitFun:function(){
+        /*表格查询*/
+        const params = {
+          weekNumber:this.weekValue,
+          orgId:this.$refs.collegeValue.value,
+          majorId:this.$refs.majorValue.value,
+          instructor:this.$refs.instructorValue.value,
+          nameOrCode:this.$refs.studentNameDom.value,
+        }
+        this.getTableData(params)
+      },
+      /*表格查询*/
+      getTableData:function(params){
+        const _this = this
+        this.$axios.get('/api/analysis/exeception-clock-by-week',{params:params
+        }).then(function (res) {
+          _this.tableData = res.data.data.result
+          _this.studentsTotal = res.data.data.totalCount
+          _this.pageTotal  =res.data.data.totalPages
+          _this.pageNo  =res.data.data.pageNo
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      /*排序查询*/
+      sortChange1:function(data){
+        let descOrAsc=''
+        if(data.order==="ascending"){
+          descOrAsc='asc'
+        }else if(data.order==="descending"){
+          descOrAsc='desc'
+        }
+        const params = {
+          weekNumber:this.weekValue,
+          orgId:this.$refs.collegeValue.value,
+          majorId:this.$refs.majorValue.value,
+          instructor:this.$refs.instructorValue.value,
+          nameOrCode:this.$refs.studentNameDom.value,
+          descOrAsc:descOrAsc,
+          orderBy:data.prop
+        }
+        this.getTableData(params)
+      },
+      /*查看详情页*/
+      handleClick(row) {
+        console.log(row);
+      },
+      /*分页查询*/
+      handleCurrentChange(val) {
+        /*表格查询*/
+        const params = {
+          weekNumber:this.weekValue,
+          orgId:this.$refs.collegeValue.value,
+          majorId:this.$refs.majorValue.value,
+          instructor:this.$refs.instructorValue.value,
+          nameOrCode:this.$refs.studentNameDom.value,
+          pageNo:val,
+          pageSize:10
+        }
+        this.getTableData(params)
       }
     }
   }

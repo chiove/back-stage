@@ -10,6 +10,7 @@ import promise from 'es6-promise'
 import Vuex from 'vuex'
 import echarts from 'echarts'
 import store from './store'
+import axiosApi from './common/js/axios'
 import './common/css/common.css'
 
 Vue.config.productionTip = false
@@ -20,6 +21,7 @@ Vue.use(Vuex)
 Vue.prototype.$axios = axios
 Vue.prototype.$md5 = md5
 Vue.prototype.$echarts = echarts
+Vue.prototype.$http = axiosApi
 
 /* eslint-disable no-new */
 new Vue({
