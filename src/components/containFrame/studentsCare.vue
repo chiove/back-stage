@@ -355,6 +355,32 @@
             }
             this.getAlCareTableList(params)
           }
+        },
+        /*发起学生关怀*/
+        startCare:function (studentIds,operatorId ) {
+          this.$axios.post('/api/analysis/start-student-care',{
+            studentIds:studentIds,
+            operatorId:operatorId
+          }).then(function (res) {
+            if(res){
+
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
+        },
+        /*删除学生关怀*/
+        deleteCare:function (careIds,operatorId) {
+          this.$axios.put('/api/analysis/delete-student-care',{
+            careIds:careIds,
+            operatorId:operatorId
+          }).then(function (res) {
+            if(res){
+
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
         }
       }
     }
