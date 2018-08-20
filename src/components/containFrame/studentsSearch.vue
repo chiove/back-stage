@@ -3,77 +3,72 @@
     <div class="tool-bar-container-border">
       <div>学生考勤查询</div>
       <div>
-        <el-select v-model="value" placeholder="全部学院" size="mini" class="tool-bar-search-select">
+        <el-select v-model="collegeListDataValue" @change="collegeSelectFun" ref="collegeValue" placeholder="全部学院" size="mini" class="tool-bar-search-select">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in collegeListData"
+            :key="item.collegeId"
+            :label="item.collegeName"
+            :value="item.collegeId">
           </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="全部专业" size="mini" class="tool-bar-search-select">
+        <el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in majorListData"
+            :key="item.buildingId"
+            :label="item.buildingName"
+            :value="item.buildingId">
           </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
+        <el-select v-model="buildListDataValue" ref="buildDom" placeholder="全部宿舍"  size="mini" class="tool-bar-search-select">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in buildListData"
+            :key="item.majorId"
+            :label="item.majorName"
+            :value="item.majorId">
           </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="全部宿舍楼" size="mini" class="tool-bar-search-select">
+        <el-select v-model="instructorListDataValue" ref="instructorValue" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in instructorListData"
+            :key="item.userId"
+            :label="item.name"
+            :value="item.userId">
           </el-option>
         </el-select>
-        <el-input placeholder="请输入学号/姓名搜索" v-model="value" class="input-with-select" size="mini">
+        <el-input placeholder="请输入学号/姓名搜索" ref="studentNameDom" v-model="studentNameValue" class="input-with-select" size="mini">
         </el-input>
-        <el-button type="primary" icon="el-icon-search" size="mini">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="searchSubmitFun">搜索</el-button>
       </div>
     </div>
     <div class="daily-data-table-container">
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        :default-sort = "{prop: 'date', order: 'descending'}"
-      >
-        <el-table-column
-          prop="date"
-          label="日期"
-          sortable
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          sortable
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="地址"
-          :formatter="formatter">
+      <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%">
+        <el-table-column prop="studentName" label="姓名"></el-table-column>
+        <el-table-column prop="studentCode" label="学号"></el-table-column>
+        <el-table-column prop="className" label="班级"></el-table-column>
+        <el-table-column prop="collegeName" label="学院名称"></el-table-column>
+        <el-table-column prop="majorName" label="专业名称"></el-table-column>
+        <el-table-column prop="instructorName" label="辅导员"></el-table-column>
+        <el-table-column prop="buildingName" label="宿舍楼栋"></el-table-column>
+        <el-table-column prop="dormitoryName" label="寝室号"></el-table-column>
+        <el-table-column prop="bedCode" label="床号"></el-table-column>
+        <el-table-column prop="totalCared" label="被关怀次数"></el-table-column>
+        <el-table-column prop="totalStayOut" label="连续未归天数" sortable="custom"></el-table-column>
+        <el-table-column prop="totalStayOutLate" label="连续晚归天数" sortable="custom"></el-table-column>
+        <el-table-column label="个人详情">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="daily-data-pagination-container">
       <el-pagination
         background
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-size="100"
+        :current-page.sync="pageNo"
+        :page-size="10"
         layout="prev, pager, next, jumper"
-        :total="1000">
+        :total="pageTotal">
       </el-pagination>
     </div>
   </div>
@@ -81,41 +76,153 @@
 
 <script>
     export default {
-        name: "studentsSearch",
+      name: "studentsSearch",
+      mounted:function(){
+        /*查询学院下拉列表*/
+        this.getCollegeListData()
+        /*查询宿舍下拉列表*/
+        this.getBuildListData()
+        /*查询表格数据*/
+        this.getTableData()
+      },
       data(){
-          return {
-            value:'',
-            options:'',
-            currentPage:1,
-            tableData: [{
-              date: '2016-05-02',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-              date: '2016-05-04',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-              date: '2016-05-03',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1516 弄'
-            }]
-          }
+        return {
+          userId:1,/*用户ID*/
+          collegeListDataValue:'',/*学院下拉列表默认值*/
+          collegeListData:[],/*学院下拉列表*/
+          majorListDataValue:'',/*专业下拉列表默认值*/
+          majorListData:[],/*专业下拉列表*/
+          instructorListDataValue:'',/*辅导员下拉列表默认值*/
+          instructorListData:[],/*辅导员下拉列表*/
+          buildListDataValue:'',/*宿舍下拉列表默认值*/
+          buildListData:[],/*宿舍下拉列表*/
+          studentNameValue:'',/*学号，姓名默认值*/
+          pageNo:1,/*当前页*/
+          pageTotal:1,/*总页数*/
+          tableData: [],/*表格数据*/
+          loadingStatus:false/*加载显示*/
+        }
       },
       methods:{
-        formatter(row, column) {
-          return row.address;
+        /*查询学院下拉列表*/
+        getCollegeListData:function(){
+          const _this = this
+          this.$axios.get('/api/select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
+          }).then(function (res) {
+            _this.collegeListData = res.data.data
+          }).catch(function (error) {
+            console.log(error)
+          })
         },
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
+        /*学院下拉选择后触发事件*/
+        collegeSelectFun:function(data){
+          const _this = this
+          this.collegeListData.forEach(function (item,index) {
+            if(item.collegeId===data){
+              _this.collegeNames = item.collegeName
+            }
+          })
+          /*查询专业下拉列表*/
+          this.$axios.get('/api/select-data/major-info/all',{params:{orgId:data}
+          }).then(function (res) {
+            _this.majorListData = res.data.data
+          }).catch(function (error) {
+            console.log(error)
+          })
         },
+        /*专业下拉选择后触发事件*/
+        majorSelectFun:function(data){
+          const _this = this
+          const params = {
+            majorId:this.$refs.collegeValue.value,
+            orgId:data
+          }
+          this.$axios.get('/api/select-data/instructor-info/all',{params:params
+          }).then(function (res) {
+            console.log(res)
+            _this.instructorListData = res.data.data
+          }).catch(function (error) {
+            console.log(error)
+          })
+        },
+        /*查询宿舍下拉列表*/
+        getBuildListData:function(){
+          const _this = this
+          this.$axios.get('/api/dormitory-building/query-by-user',{params:{userId:_this.userId}
+          }).then(function (res) {
+            _this.buildListData = res.data.data
+          }).catch(function (error) {
+            console.log(error)
+          })
+        },
+        /*搜索按钮搜索*/
+        searchSubmitFun:function(){
+          /*表格查询*/
+          const params = {
+            buildingId:this.$refs.buildDom.value,
+            orgId:this.$refs.collegeValue.value,
+            majorId:this.$refs.majorValue.value,
+            instructor:this.$refs.instructorValue.value,
+            nameOrCode:this.$refs.studentNameDom.value,
+          }
+          this.getTableData(params)
+        },
+        /*表格查询*/
+        getTableData:function(params){
+          this.loadingStatus = true
+          const _this = this
+          this.$axios.get('/api/data-recheck/student-clock-care-stat',{params:params
+          }).then(function (res) {
+            _this.tableData = res.data.data.result
+            _this.pageTotal =res.data.data.totalPages
+            _this.pageNo =res.data.data.pageNo
+          }).catch(function (error) {
+            console.log(error)
+          })
+          setTimeout(() => {
+            this.loadingStatus = false
+          }, 2000)
+        },
+        /*排序查询*/
+        sortChange1:function(data){
+          let descOrAsc=''
+          if(data.order==="ascending"){
+            descOrAsc='asc'
+          }else if(data.order==="descending"){
+            descOrAsc='desc'
+          }
+          const params = {
+            buildingId:this.$refs.buildDom.value,
+            orgId:this.$refs.collegeValue.value,
+            majorId:this.$refs.majorValue.value,
+            instructor:this.$refs.instructorValue.value,
+            nameOrCode:this.$refs.studentNameDom.value,
+            descOrAsc:descOrAsc,
+            orderBy:data.prop
+          }
+          this.getTableData(params)
+        },
+        /*查看详情页*/
+        handleClick(row) {
+          this.$router.push({
+            path:'/index/studentsDetails',
+            query:row
+          })
+        },
+        /*分页查询*/
         handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
-        },
+          /*表格查询*/
+          const params = {
+            buildingId:this.$refs.buildDom.value,
+            orgId:this.$refs.collegeValue.value,
+            majorId:this.$refs.majorValue.value,
+            instructor:this.$refs.instructorValue.value,
+            nameOrCode:this.$refs.studentNameDom.value,
+            pageNo:val,
+            pageSize:10
+          }
+          this.getTableData(params)
+        }
       }
     }
 </script>

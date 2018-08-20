@@ -3,119 +3,176 @@
     <div class="tool-bar-container-border">
       <div>辅导员查寝签到</div>
       <div>
-        <el-select v-model="value" placeholder="全部学院" size="mini" class="tool-bar-search-select">
+        <el-select v-model="collegeListDataValue" ref="collegeValue" placeholder="全部学院" size="mini" class="tool-bar-search-select">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in collegeListData"
+            :key="item.collegeId"
+            :label="item.collegeName"
+            :value="item.collegeId">
           </el-option>
         </el-select>
-        <el-select v-model="value" placeholder="全部专业" size="mini" class="tool-bar-search-select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="value" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="value" placeholder="全部宿舍楼" size="mini" class="tool-bar-search-select">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-input placeholder="请输入学号/姓名搜索" v-model="value" class="input-with-select" size="mini">
+        <el-input placeholder="请输入学号/姓名搜索" ref="studentNameDom" v-model="teacherNameValue" class="input-with-select" size="mini">
         </el-input>
-        <el-button type="primary" icon="el-icon-search" size="mini">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="searchSubmitFun">搜索</el-button>
       </div>
     </div>
     <div class="daily-data-table-container">
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        :default-sort = "{prop: 'date', order: 'descending'}"
-      >
-        <el-table-column
-          prop="date"
-          label="日期"
-          sortable
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          sortable
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="地址"
-          :formatter="formatter">
+      <el-table :data="tableData" @sort-change="sortChange1"  v-loading="loadingStatus" style="width: 100%">
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="code" label="工号"></el-table-column>
+        <el-table-column prop="collegeName" label="学院名称"></el-table-column>
+        <el-table-column prop="responsibleStudent" label="负责学生数" sortable="custom"></el-table-column>
+        <el-table-column prop="clockCount" label="打卡次数" sortable="custom"></el-table-column>
+        <el-table-column prop="dealCareCount" label="处理关怀次数" sortable="custom"></el-table-column>
+        <el-table-column prop="totalLayOutCount" label="累计未归学生" sortable="custom"></el-table-column>
+        <el-table-column prop="totalLayOutLateCount" label="累计晚归学生" sortable="custom"></el-table-column>
+        <el-table-column label="个人详情">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="downLoadFun(scope.row)" type="text" size="small">下载</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="daily-data-pagination-container">
       <el-pagination
         background
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-size="100"
+        :current-page.sync="pageNo"
+        :page-size="10"
         layout="prev, pager, next, jumper"
-        :total="1000">
+        :total="pageTotal">
       </el-pagination>
     </div>
+    <el-dialog
+      title="打卡记录"
+      :visible.sync="viewDetails"
+      width="30%"
+      >
+      <div>
+        <el-table
+          :data="tableDetailsData"
+          style="width: 100%">
+          <el-table-column
+            prop="name"
+            label="姓名"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="code"
+            label="工号"
+           >
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="打卡时间">
+          </el-table-column>
+        </el-table>
+      </div>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="viewDetails = false" size="mini">取 消</el-button>
+    <el-button type="primary" @click="viewDetails = false" size="mini">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   export default {
     name: "studentsSearch",
+    mounted:function(){
+      /*查询学院下拉列表*/
+      this.getCollegeListData()
+      /*查询表格数据*/
+      this.getTableData()
+    },
     data(){
       return {
-        value:'',
-        options:'',
-        currentPage:1,
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+        userId:1,/*用户ID*/
+        collegeListDataValue:'',/*学院下拉列表默认值*/
+        collegeListData:[],/*学院下拉列表*/
+        teacherNameValue:'',
+        pageNo:1,/*当前页*/
+        pageTotal:1,/*总页数*/
+        tableData: [],/*表格数据*/
+        loadingStatus:false,/*加载显示*/
+        viewDetails:false,/*查看详情*/
+        tableDetailsData:[],/*详情页面table数据*/
       }
     },
     methods:{
-      formatter(row, column) {
-        return row.address;
+      /*查询学院下拉列表*/
+      getCollegeListData:function(){
+        const _this = this
+        this.$axios.get('/api/select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
+        }).then(function (res) {
+          _this.collegeListData = res.data.data
+        }).catch(function (error) {
+          console.log(error)
+        })
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+      /*搜索按钮搜索*/
+      searchSubmitFun:function(){
+        /*表格查询*/
+        const params = {
+          orgId:this.$refs.collegeValue.value,
+          nameOrCode:this.$refs.studentNameDom.value,
+        }
+        this.getTableData(params)
       },
+      /*表格查询*/
+      getTableData:function(params){
+        this.loadingStatus = true
+        const _this = this
+        this.$axios.get('/api/analysis/instructor-stat',{params:params
+        }).then(function (res) {
+          _this.tableData = res.data.data.result
+          _this.pageTotal  =res.data.data.totalPages
+          _this.pageNo  =res.data.data.pageNo
+        }).catch(function (error) {
+          console.log(error)
+        })
+        setTimeout(() => {
+          this.loadingStatus = false
+        }, 2000)
+      },
+      /*排序查询*/
+      sortChange1:function(data){
+        let descOrAsc=''
+        if(data.order==="ascending"){
+          descOrAsc='asc'
+        }else if(data.order==="descending"){
+          descOrAsc='desc'
+        }
+        const params = {
+          orgId:this.$refs.collegeValue.value,
+          nameOrCode:this.$refs.studentNameDom.value,
+          descOrAsc:descOrAsc,
+          orderBy:data.prop
+        }
+        this.getTableData(params)
+      },
+      /*查看详情页*/
+      handleClick(row) {
+        this.viewDetails = true
+        this.tableDetailsData = []
+        console.log(row);
+      },
+      /*下载excel*/
+      downLoadFun:function(){
+
+      },
+      /*分页查询*/
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
+        /*表格查询*/
+        const params = {
+          orgId:this.$refs.collegeValue.value,
+          nameOrCode:this.$refs.studentNameDom.value,
+          pageNo:val,
+          pageSize:10
+        }
+        this.getTableData(params)
+      }
     }
   }
 </script>

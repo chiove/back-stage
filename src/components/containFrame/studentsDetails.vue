@@ -8,7 +8,7 @@
       <span></span>
       </div>
       <div>
-        <el-button type="primary" size="mini">返回</el-button>
+        <el-button type="primary" size="mini" @click="backRouterFun">返回</el-button>
       </div>
     </div>
     <div class="students-details-banner">
@@ -16,48 +16,48 @@
       <div class="students-details-banner-content">
         <div class="students-details-banner-content-information">
           <div class="students-details-banner-content-img">
-            <img src="" alt="">
+            <img :src="dataList.profilePhoto" alt="">
           </div>
           <div class="students-details-banner-content-information-item">
-            <span class="students-details-banner-content-information-name">李正华</span>
-            <span>学院名称：计算机学院</span>
-            <span>辅导员：孔连顺</span>
+            <span class="students-details-banner-content-information-name">{{dataList.studentName}}</span>
+            <span>学院名称：{{dataList.collegeName}}</span>
+            <span>辅导员：{{dataList.instructorName}}</span>
           </div>
           <div class="students-details-banner-content-information-item">
-            <span>专业名称：计算机专业</span>
-            <span>寝室号：521</span>
+            <span>专业名称：{{dataList.majorName}}</span>
+            <span>寝室号：{{dataList.dormitoryName}}</span>
           </div>
           <div class="students-details-banner-content-information-item">
-            <span>学号：2012022364</span>
-            <span>床号：左1</span>
+            <span>学号：{{dataList.studentCode}}</span>
+            <span>床号：{{dataList.bedCode}}号</span>
           </div>
           <div class="students-details-banner-content-information-item">
-            <span>班级：计算机01班</span>
+            <span>班级：{{dataList.className}}</span>
           </div>
         </div>
         <div class="students-details-banner-content-data">
           <div class="students-details-banner-content-data-item">
             <div class="students-details-banner-content-data-item-number">
-              200
+              {{dataList.totalCared}}
             </div>
             <div class="students-details-banner-content-data-item-text">
-              昨日晚归人数
+              被关怀次数
             </div>
           </div>
           <div class="students-details-banner-content-data-item">
             <div class="students-details-banner-content-data-item-number">
-              200
+              {{dataList.totalStayOut}}
             </div>
             <div class="students-details-banner-content-data-item-text">
-              昨日晚归人数
+              连续未归天数
             </div>
           </div>
           <div class="students-details-banner-content-data-item">
             <div class="students-details-banner-content-data-item-number">
-              200
+              {{dataList.totalStayOutLate}}
             </div>
             <div class="students-details-banner-content-data-item-text">
-              昨日晚归人数
+             连续晚归天数
             </div>
           </div>
         </div>
@@ -90,13 +90,24 @@
 <script>
     export default {
       name: "studentsDetails",
+      activated:function(){
+       if(this.$route.query){
+         this.dataList = this.$route.query
+         this.studentId = this.$route.query.studentId
+       }
+      },
       data() {
         return {
+          dataList:{},
           activeName: 'first',
           value:''
         };
       },
       methods: {
+        /*返回上一级路由*/
+        backRouterFun:function(){
+          this.$router.go(-1)
+        },
         handleClick(tab, event) {
           console.log(tab, event);
         }
@@ -139,7 +150,7 @@
     width: .88rem;
   }
   .students-details-banner-content-information{
-    width: 8.8rem;
+    width: 10.8rem;
     display: flex;
     justify-content: flex-start;
   }

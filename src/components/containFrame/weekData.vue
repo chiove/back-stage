@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="daily-data-table-container">
-      <el-table :data="tableData" @sort-change="sortChange1" style="width: 100%">
+      <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%">
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="studentCode" label="学号"></el-table-column>
         <el-table-column prop="className" label="班级"></el-table-column>
@@ -126,7 +126,8 @@
         studentNameValue:'',/*学号，姓名默认值*/
         pageNo:1,/*当前页数*/
         pageTotal:1,/*总页数*/
-        tableData: []/*表格数据*/
+        tableData: [],/*表格数据*/
+        loadingStatus:false/*加载显示*/
       }
     },
     methods: {
@@ -333,6 +334,7 @@
       },
       /*表格查询*/
       getTableData:function(params){
+        this.loadingStatus = true
         const _this = this
         this.$axios.get('/api/analysis/exeception-clock-by-week',{params:params
         }).then(function (res) {
@@ -343,6 +345,9 @@
         }).catch(function (error) {
           console.log(error)
         })
+        setTimeout(() => {
+          this.loadingStatus = false
+        }, 2000)
       },
       /*排序查询*/
       sortChange1:function(data){
@@ -365,7 +370,10 @@
       },
       /*查看详情页*/
       handleClick(row) {
-        console.log(row);
+        this.$router.push({
+          path:'/index/studentsDetails',
+          query:row
+        })
       },
       /*分页查询*/
       handleCurrentChange(val) {

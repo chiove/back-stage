@@ -36,7 +36,7 @@
       <el-tabs v-model="tabActive" @tab-click="tabChangeFun">
         <el-tab-pane label="可发起" name="first">
           <div class="daily-data-table-container">
-            <el-table :data="tableData" @sort-change="sortChange1" style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55"></el-table-column>
               <el-table-column prop="name" label="姓名"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
@@ -50,7 +50,6 @@
               <el-table-column prop="totalCared" label="被关怀次数"></el-table-column>
               <el-table-column prop="continuousStayoutDays" label="连续未归天数" sortable="custom"></el-table-column>
               <el-table-column prop="continuousStayoutLateDays" label="连续晚归天数" sortable="custom"></el-table-column>
-            <!--<el-table-column prop="" label="关怀状态"></el-table-column>-->
               <el-table-column label="个人详情">
                 <template slot-scope="scope">
                   <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -60,8 +59,8 @@
           </div>
           <div class="daily-data-pagination-container">
             <div>
-              <el-button type="primary" size="mini">发起关怀</el-button>
-              <el-button type="primary" size="mini">撤销关怀</el-button>
+              <el-button type="primary" size="mini" @click="startCareFun">发起关怀</el-button>
+              <el-button type="primary" size="mini" @click="deleteCareFun">撤销关怀</el-button>
             </div>
             <el-pagination
                 background
@@ -75,7 +74,7 @@
         </el-tab-pane>
         <el-tab-pane label="待处理" name="second">
           <div class="daily-data-table-container">
-            <el-table :data="tableData"  @sort-change="sortChange1" style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table :data="tableData"  @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55"></el-table-column>
               <el-table-column prop="name" label="姓名"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
@@ -99,7 +98,7 @@
           </div>
           <div class="daily-data-pagination-container">
             <div>
-              <el-button type="primary" size="mini">撤销关怀</el-button>
+              <el-button type="primary" size="mini" @click="deleteCareFun">撤销关怀</el-button>
             </div>
             <el-pagination
               background
@@ -113,7 +112,7 @@
         </el-tab-pane>
         <el-tab-pane label="已处理" name="third">
           <div class="daily-data-table-container">
-            <el-table :data="tableData" @sort-change="sortChange1" style="width: 100%">
+            <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%">
               <el-table-column prop="name" label="姓名"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
               <el-table-column prop="className" label="班级"></el-table-column>
@@ -131,6 +130,7 @@
             </el-table>
           </div>
           <div class="daily-data-pagination-container">
+            <div></div>
             <el-pagination
               background
               @current-change="handleCurrentChange"
@@ -150,6 +150,8 @@
     export default {
       name: "studentsCare",
       mounted: function () {
+        /*查询学院下拉列表*/
+        this.getCollegeListData()
         /*默认发起未关怀表格数据*/
         this.getTableData()
       },
@@ -169,6 +171,7 @@
           tabActive: 'first',/*tab当前状态*/
           multipleSelection:'',/*发起关怀选中行*/
           willConfirm:'',/*待处理选中行*/
+          loadingStatus:false/*加载显示*/
         }
       },
       methods: {
@@ -190,10 +193,6 @@
           this.collegeListData.forEach(function (item, index) {
             if (item.collegeId === data) {
               _this.collegeNames = item.collegeName
-              /*默认渲染环形图*/
-              this.getRingChartData(_this.weekValue, item.collegeId)
-              /*默认渲染折线图*/
-              this.getLineChartData(_this.weekValue, item.collegeId)
             }
           })
           /*查询专业下拉列表*/
@@ -241,6 +240,7 @@
         },
         /*表格查询*/
         getTableData: function (params) {
+          this.loadingStatus = true
           const _this = this
           this.$axios.get('/api/analysis/care/can-start', {
             params: params
@@ -251,9 +251,13 @@
           }).catch(function (error) {
             console.log(error)
           })
+          setTimeout(() => {
+            this.loadingStatus = false
+          }, 2000)
         },
         /*待处理和已关怀表格查询*/
         getAlCareTableList: function (params) {
+          this.loadingStatus = true
           const _this = this
           this.$axios.get('/api/analysis/student-care', {
             params: params
@@ -264,6 +268,9 @@
           }).catch(function (error) {
             console.log(error)
           })
+          setTimeout(() => {
+            this.loadingStatus = false
+          }, 3000)
         },
         /*排序查询*/
         sortChange1: function (data) {
@@ -293,7 +300,10 @@
         },
         /*查看详情页*/
         handleClick(row) {
-          console.log(row);
+          this.$router.push({
+            path:'/index/studentsDetails',
+            query:row
+          })
         },
         /*分页查询*/
         handleCurrentChange(val) {
@@ -357,26 +367,69 @@
           }
         },
         /*发起学生关怀*/
-        startCare:function (studentIds,operatorId ) {
+        startCareFun:function(){
+          let studentIds = []
+          this.multipleSelection.forEach(function (item,index) {
+            studentIds.push(item.studentId)
+          })
+          this.startCareData(studentIds,this.userId)
+        },
+        /*撤销关怀*/
+        deleteCareFun:function(){
+          let studentIds = []
+          if (this.tabActive === 'first') {
+            this.multipleSelection.forEach(function (item,index) {
+              studentIds.push(item.studentId)
+            })
+          } else if (this.tabActive === 'second') {
+            this.willConfirm.forEach(function (item,index) {
+              studentIds.push(item.studentId)
+            })
+          }
+          this.deleteCareData(studentIds,this.userId)
+        },
+        /*发起学生关怀数据查询*/
+        startCareData:function (studentIds,operatorId ) {
+          const _this = this
           this.$axios.post('/api/analysis/start-student-care',{
             studentIds:studentIds,
             operatorId:operatorId
           }).then(function (res) {
             if(res){
-
+              let params = {
+                orgId: _this.$refs.collegeValue.value,
+                majorId: _this.$refs.majorValue.value,
+                instructor: _this.$refs.instructorValue.value,
+                nameOrCode: _this.$refs.studentNameDom.value,
+              }
+              if (_this.tabActive === 'first') {
+                _this.getTableData(params)
+              }
             }
           }).catch(function (error) {
             console.log(error)
           })
         },
         /*删除学生关怀*/
-        deleteCare:function (careIds,operatorId) {
+        deleteCareData:function (careIds,operatorId) {
+          const _this = this
           this.$axios.put('/api/analysis/delete-student-care',{
             careIds:careIds,
             operatorId:operatorId
           }).then(function (res) {
             if(res){
-
+              let params = {
+                orgId: _this.$refs.collegeValue.value,
+                majorId: _this.$refs.majorValue.value,
+                instructor: _this.$refs.instructorValue.value,
+                nameOrCode: _this.$refs.studentNameDom.value,
+              }
+              if (_this.tabActive === 'first') {
+                this.getTableData(params)
+              } else if (_this.tabActive === 'second') {
+                params.careStatus = 1
+                _this.getAlCareTableList(params)
+              }
             }
           }).catch(function (error) {
             console.log(error)
