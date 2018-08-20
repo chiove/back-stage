@@ -49,7 +49,7 @@
               {{dataList.totalStayOut}}
             </div>
             <div class="students-details-banner-content-data-item-text">
-              连续未归天数
+              累计未归次数
             </div>
           </div>
           <div class="students-details-banner-content-data-item">
@@ -57,7 +57,7 @@
               {{dataList.totalStayOutLate}}
             </div>
             <div class="students-details-banner-content-data-item-text">
-             连续晚归天数
+             累计晚归次数数
             </div>
           </div>
         </div>
@@ -78,7 +78,13 @@
           </el-date-picker>
         </div>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="关怀反馈数据" name="first">关怀反馈数据</el-tab-pane>
+          <el-tab-pane label="关怀反馈数据" name="first">
+            <el-table :data="alCareListData"  v-loading="loadingStatus" style="width: 100%">
+              <el-table-column prop="taskDate" label="任务时间"></el-table-column>
+              <el-table-column prop="dealDate" label="处理时间"></el-table-column>
+              <el-table-column prop="remark" label="反馈结果"></el-table-column>
+            </el-table>
+          </el-tab-pane>
           <el-tab-pane label="门禁打卡数据" name="second">门禁打卡数据</el-tab-pane>
           <el-tab-pane label="历史打卡数据" name="third">历史打卡数据</el-tab-pane>
         </el-tabs>
@@ -98,7 +104,12 @@
       },
       data() {
         return {
-          dataList:{},
+          dataList:{},/*详情页数据*/
+          studentId:1,/*学生ID*/
+          alCareListData:[],/*已关怀列表数据*/
+          clockListData:[],/*门禁打卡数据*/
+          historyClockListData:[],/*历史打卡数据*/
+          loadingStatus:false,/*加载显示*/
           activeName: 'first',
           value:''
         };
@@ -108,9 +119,60 @@
         backRouterFun:function(){
           this.$router.go(-1)
         },
+        /*tab切换触发事件*/
         handleClick(tab, event) {
-          console.log(tab, event);
-        }
+          console.log(tab)
+          if(tab.name==='first'){
+            this.getAlCareListData()
+          }
+        },
+        /*获取已关怀列表*/
+        getAlCareListData:function () {
+          this.loadingStatus = true
+          const _this = this
+          this.$axios.get('/api/care-student',{
+            params:{
+              studentId:_this.studentId
+            }
+          }).then(function (res) {
+            if(res){
+              _this.alCareListData = res.data.result
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
+          setTimeout(() => {
+            this.loadingStatus = false
+          }, 2000)
+        },
+        getClockListData:function () {
+          const _this = this
+          this.$axios.get('/api/care-student',{
+            params:{
+              studentId:_this.studentId
+            }
+          }).then(function (res) {
+            if(res){
+              _this.alCareListData = res.data.result
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
+        },
+        getHistoryClockListData:function () {
+          const _this = this
+          this.$axios.get('/api/care-student',{
+            params:{
+              studentId:_this.studentId
+            }
+          }).then(function (res) {
+            if(res){
+              _this.alCareListData = res.data.result
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
+        },
       }
     }
 </script>
