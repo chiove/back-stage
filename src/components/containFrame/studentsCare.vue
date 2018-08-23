@@ -112,7 +112,7 @@
         </el-tab-pane>
         <el-tab-pane label="已处理" name="third">
           <div class="daily-data-table-container">
-            <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%">
+            <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" @selection-change="handleSelectionChange" style="width: 100%">
               <el-table-column prop="name" label="姓名"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
               <el-table-column prop="className" label="班级"></el-table-column>
@@ -150,14 +150,20 @@
     export default {
       name: "studentsCare",
       mounted: function () {
+        let params = {
+          orgId: this.$refs.collegeValue.value,
+          majorId: this.$refs.majorValue.value,
+          instructor: this.$refs.instructorValue.value,
+          nameOrCode: this.$refs.studentNameDom.value,
+        }
         /*查询学院下拉列表*/
         this.getCollegeListData()
         /*默认发起未关怀表格数据*/
-        this.getTableData()
+        this.getTableData(params)
       },
       data() {
         return {
-          userId: 1, /*用户ID*/
+          userId: 100725, /*用户ID*/
           collegeListDataValue: '', /*学院下拉列表默认值*/
           collegeListData: [], /*学院下拉列表*/
           majorListDataValue: '', /*专业下拉列表默认值*/
@@ -182,7 +188,6 @@
             params: {userId: _this.userId}
           }).then(function (res) {
             _this.collegeListData = res.data.data
-            _this.collegeListData = [{collegeId: '1', collegeName: '传媒学院'}, {collegeId: '2', collegeName: '舞蹈学院'}]
           }).catch(function (error) {
             console.log(error)
           })
@@ -369,42 +374,70 @@
         },
         /*发起学生关怀*/
         startCareFun:function(){
-          let studentIds = []
-          this.multipleSelection.forEach(function (item,index) {
-            studentIds.push(item.studentId)
-          })
-          this.startCareData(studentIds,this.userId)
-        },
-        /*撤销关怀*/
-        deleteCareFun:function(){
-          let studentIds = []
-          if (this.tabActive === 'first') {
+          if(this.multipleSelection.length>0){
+            let studentIds = []
             this.multipleSelection.forEach(function (item,index) {
               studentIds.push(item.studentId)
             })
-          } else if (this.tabActive === 'second') {
-            this.willConfirm.forEach(function (item,index) {
-              studentIds.push(item.studentId)
+            this.startCareData(studentIds,this.userId)
+          }else{
+            this.$notify.error({
+              title:'提示',
+              message:'至少选择一条',
+              position: 'bottom-right'
             })
           }
-          this.deleteCareData(studentIds,this.userId)
+        },
+        /*撤销关怀*/
+        deleteCareFun:function(){
+           if (this.tabActive === 'first') {
+              if(this.multipleSelection.length>0){
+                let studentIds = []
+                this.multipleSelection.forEach(function (item,index) {
+                  studentIds.push(item.studentId)
+                })
+                this.deleteCareData(studentIds,this.userId)
+              }else{
+                 this.$notify.error({
+                   title:'提示',
+                   message:'至少选择一条',
+                   position: 'bottom-right'
+                 })
+              }
+           } else if (this.tabActive === 'second') {
+             if(this.willConfirm.length>0){
+               let studentIdwill = []
+               this.willConfirm.forEach(function (item,index) {
+                 studentIdwill.push(item.studentId)
+               })
+               this.deleteCareData(studentIdwill,this.userId)
+             }else{
+               this.$notify.error({
+                 title:'提示',
+                 message:'至少选择一条',
+                 position: 'bottom-right'
+               })
+             }
+           }
         },
         /*发起学生关怀数据查询*/
         startCareData:function (studentIds,operatorId ) {
           const _this = this
           this.$axios.post('/api/analysis/start-student-care',{
-            studentIds:studentIds,
-            operatorId:operatorId
+            'studentIds':studentIds,
+            'operatorId':operatorId
           }).then(function (res) {
             if(res){
-              let params = {
-                orgId: _this.$refs.collegeValue.value,
-                majorId: _this.$refs.majorValue.value,
-                instructor: _this.$refs.instructorValue.value,
-                nameOrCode: _this.$refs.studentNameDom.value,
-              }
-              if (_this.tabActive === 'first') {
-                _this.getTableData(params)
+              if(res.data.code === '000000'){
+                let params = {
+                  orgId: _this.$refs.collegeValue.value,
+                  majorId: _this.$refs.majorValue.value,
+                  instructor: _this.$refs.instructorValue.value,
+                  nameOrCode: _this.$refs.studentNameDom.value,
+                }
+                if (_this.tabActive === 'first') {
+                  _this.getTableData(params)
+                }
               }
             }
           }).catch(function (error) {

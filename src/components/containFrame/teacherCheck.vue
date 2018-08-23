@@ -154,11 +154,7 @@
       },
       /*查看详情页*/
       handleClick(row) {
-        this.$router.push({
-          name:'studentsDetails',
-          path: '/index/studentsDetails',
-          params:row
-        })
+
       },
       /*下载excel*/
       downLoadFun:function(){

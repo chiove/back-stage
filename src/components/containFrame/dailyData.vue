@@ -196,7 +196,6 @@
           this.$axios.get('/api/select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
           }).then(function (res) {
             _this.collegeListData = res.data.data
-            _this.collegeListData = [{collegeId:'1',collegeName:'传媒学院'},{collegeId:'2',collegeName:'舞蹈学院'}]
           }).catch(function (error) {
             console.log(error)
           })
