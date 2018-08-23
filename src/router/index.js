@@ -34,6 +34,7 @@ export default new Router({
         component: resolve => require(['@/components/containFrame/teacherCheck'],resolve),
       },
       {
+        name:'studentsDetails',
         path: '/index/studentsDetails',
         component: resolve => require(['@/components/containFrame/studentsDetails'],resolve),
       }

@@ -301,8 +301,9 @@
         /*查看详情页*/
         handleClick(row) {
           this.$router.push({
-            path:'/index/studentsDetails',
-            query:row
+            name:'studentsDetails',
+            path: '/index/studentsDetails',
+            params:row
           })
         },
         /*分页查询*/

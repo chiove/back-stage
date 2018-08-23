@@ -97,10 +97,10 @@
     export default {
       name: "studentsDetails",
       activated:function(){
-       if(this.$route.query){
-         this.dataList = this.$route.query
-         this.studentId = this.$route.query.studentId
-       }
+        if(this.$route.params){
+          this.dataList = this.$route.params
+          this.studentId = this.$route.params.studentId
+        }
       },
       data() {
         return {
