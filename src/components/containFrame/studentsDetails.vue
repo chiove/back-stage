@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="students-details-banner-content-data">
-          <div class="students-details-banner-content-data-item">
+          <div class="students-details-banner-content-data-item arrive-clock">
             <div class="students-details-banner-content-data-item-number">
               {{dataList.totalCared}}
             </div>
@@ -44,7 +44,7 @@
               被关怀次数
             </div>
           </div>
-          <div class="students-details-banner-content-data-item">
+          <div class="students-details-banner-content-data-item stay-out-clock">
             <div class="students-details-banner-content-data-item-number">
               {{dataList.totalStayOut}}
             </div>
@@ -52,7 +52,7 @@
               累计未归次数
             </div>
           </div>
-          <div class="students-details-banner-content-data-item">
+          <div class="students-details-banner-content-data-item stay-out-late-clock">
             <div class="students-details-banner-content-data-item-number">
               {{dataList.totalStayOutLate}}
             </div>
@@ -248,9 +248,20 @@
     justify-content: center;
     flex-flow: column;
     color: #fff;
-    background: #2184C5;
     text-align: center;
     height: 1rem;
+  }
+  .stay-out-clock{
+    background-image: url('../../assets/images/stayOutClock.png');
+    background-size: 1.9rem 1rem;
+  }
+  .stay-out-late-clock{
+    background-image: url('../../assets/images/stayOutLateClock.png');
+    background-size: 1.9rem 1rem;
+  }
+  .arrive-clock{
+    background-image: url('../../assets/images/arriveClock.png');
+    background-size: 1.9rem 1rem;
   }
   .students-details-banner-content-data-item-number{
     font-size:30px;

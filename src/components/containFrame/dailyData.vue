@@ -22,7 +22,7 @@
           {{collegeNames}}
         </div>
         <div class="daily-data-banner-content">
-          <div class="daily-data-banner-item">
+          <div class="daily-data-banner-item stay-out-late-clock">
             <div class="daily-data-banner-number">
               {{lastNightStayoutLateNum}}
             </div>
@@ -30,7 +30,7 @@
               昨日晚归人数
             </div>
           </div>
-          <div class="daily-data-banner-item">
+          <div class="daily-data-banner-item stay-out-clock">
             <div class="daily-data-banner-number">
               {{lastNightStayoutNum}}
             </div>
@@ -89,14 +89,14 @@
       </div>
       <div class="daily-data-table-container">
         <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%">
-          <el-table-column prop="name" label="姓名"></el-table-column>
+          <el-table-column prop="studentName" label="姓名"></el-table-column>
           <el-table-column prop="studentCode" label="学号"></el-table-column>
           <el-table-column prop="className" label="班级"></el-table-column>
           <el-table-column prop="collegeName" label="学院名称"></el-table-column>
           <el-table-column prop="majorName" label="专业名称"></el-table-column>
           <el-table-column prop="instructorName" label="辅导员"></el-table-column>
           <el-table-column prop="buildingName" label="宿舍楼栋"></el-table-column>
-          <el-table-column prop="dormitoryName" label="寝室号"></el-table-column>
+          <el-table-column prop="dormitoryId" label="寝室号"></el-table-column>
           <el-table-column prop="bedCode" label="床号"></el-table-column>
           <el-table-column prop="clockStatus" label="昨日考勤状态"></el-table-column>
           <el-table-column prop="continuousStayoutDays" label="连续未归天数" sortable="custom"></el-table-column>
@@ -130,7 +130,7 @@
         const yesterday = `${newDate.year}-${newDate.month}-${newDate.day-1}`
         this.searchDateValue = yesterday;
         /*查询学院下拉列表*/
-        this.getCollegeListData("1")
+        this.getCollegeListData(this.userId)
         /*学院考勤人数*/
         this.checkTotalFun(this.searchDateValue)
         /*表格查询*/
@@ -151,7 +151,7 @@
             collegeNames:'全部学院',/*学院名称*/
             lastNightStayoutLateNum:0,/*晚归人数*/
             lastNightStayoutNum:0,/*未归人数*/
-            userId:1,/*用户ID*/
+            userId:100725,/*用户ID*/
             searchDateValue:'',/*初始化为昨天时间*/
             collegeListDataValue:'',/*学院下拉列表默认值*/
             collegeListData:[],/*学院下拉列表*/
@@ -172,17 +172,21 @@
         dateChangeFun:function(data){
           const dateValue = `${data.getFullYear()}-${data.getMonth()+1}-${data.getDate()}`
           /*学院考勤人数*/
-          this.checkTotalFun({dateValue})
+          this.checkTotalFun(dateValue)
           /*表格查询*/
           const params = {
-            date:this.$refs.dateValue.value,
+            date:dateValue,
           }
           this.getTableData(params)
         },
         /*考勤数查询*/
         checkTotalFun:function(date,orgId){
           const _this = this
-          this.$axios.get('/api/analysis/exeception-stat-by-day',{params:{date:date,orgId:orgId}
+          this.$axios.get('/api/analysis/exeception-stat-by-day',{
+            params:{
+              date:date,
+              orgId:orgId
+            }
           }).then(function (res) {
             _this.lastNightStayoutLateNum = res.data.data.lastNightStayoutLateNum
             _this.lastNightStayoutNum = res.data.data.lastNightStayoutNum
@@ -326,7 +330,6 @@
   .daily-data-banner-item{
     width:2.78rem;
     height:.82rem;
-    background: #2184C5;
     text-align: center;
     margin-right: .12rem;
     border-radius: .04rem;
@@ -334,6 +337,14 @@
     align-items: center;
     justify-content: center;
     flex-flow: column;
+  }
+  .stay-out-clock{
+    background-image: url('../../assets/images/stayOutClock.png');
+    background-size: 2.78rem .82rem;
+  }
+  .stay-out-late-clock{
+    background-image: url('../../assets/images/stayOutLateClock.png');
+    background-size: 2.78rem .82rem;
   }
   .daily-data-banner-number{
     font-size:.24rem;

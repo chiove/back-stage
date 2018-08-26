@@ -9,9 +9,9 @@
         <el-select v-model="weekValue" placeholder="周选择" ref="weekDom" @change="weekEventFun" size="mini" class="tool-bar-search-select">
           <el-option
             v-for="item in weekListData"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item.weekNumber"
+            :label="item.weekNumber"
+            :value="item.weekNumber">
           </el-option>
         </el-select>
       </div>
@@ -62,7 +62,7 @@
     </div>
     <div class="daily-data-table-container">
       <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%">
-        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="studentName" label="姓名"></el-table-column>
         <el-table-column prop="studentCode" label="学号"></el-table-column>
         <el-table-column prop="className" label="班级"></el-table-column>
         <el-table-column prop="collegeName" label="学院名称"></el-table-column>
@@ -108,7 +108,7 @@
       /*学院查询*/
       this.getCollegeListData()
       /*表格渲染*/
-      this.getTableData({weekNumber:this.weekValue})
+      this.getTableData({weekNum:this.weekValue})
     },
     data(){
       return {
@@ -136,13 +136,7 @@
        const _this = this
         this.$axios.get('/api/select-data/week-info/all')
           .then(function (res) {
-            let listItem = {}
-          for (let week=1;week<res.data.data.weekNumber.length;week++)
-          {
-            listItem.value = week
-            listItem.label = `第${week}周`
-            _this.weekListData.push(week)
-          }
+            _this.weekListData = res.data.data
         }).catch(function (error) {
           console.log(error)
         })
@@ -155,12 +149,16 @@
         /*默认渲染折线图*/
         this.getLineChartData(data)
         /*表格渲染*/
-        this.getTableData({weekNumber:data})
+        this.getTableData({weekNum:data})
       },
       /*查询环形图数据*/
       getRingChartData:function(weekNumber,orgId){
         const _this = this
-        this.$axios.get('/api/analysis/exeception-stat-by-week',{params:{weekNumber :weekNumber,orgId:orgId}
+        this.$axios.get('/api/analysis/exeception-stat-by-week',{
+          params:{
+            weekNumber :weekNumber,
+            orgId:orgId
+          }
         }).then(function (res) {
             /*渲染环形图*/
             _this.drawRing(res.data.data.weekNormalNum,res.data.data.weekStayoutLateNum,res.data.data.weekStayoutNum)
@@ -171,16 +169,18 @@
       /*查询折线图数据*/
       getLineChartData:function(weekNumber,orgId){
         const _this = this
-        this.$axios.get('/api/analysis/exeception-stat-by-day-of-week',{params:{weekNumber :weekNumber,orgId:orgId}
+        this.$axios.get('/api/analysis/exeception-stat-by-day-of-week',{params:{weekNum:weekNumber,orgId:orgId}
         }).then(function (res) {
-          /*渲染折线图*/
-          let dateArray=[],stayOutLateArray=[],stayOutArray=[]
-          res.data.data.forEach(function (item,index) {
-            dateArray.push(`${item.date.getMonth()+1}/${item.date.getDate()}`)
-            stayOutLateArray.push(item.stayoutLateNum)
-            stayOutArray.push(item.stayoutNum)
-          })
-         this.drawLine(dateArray,stayOutLateArray,stayOutArray)
+          if(res){
+            /*渲染折线图*/
+            let dateArray=[],stayOutLateArray=[],stayOutArray=[]
+            res.data.data.forEach(function (item,index) {
+              dateArray.push(item.date)
+              stayOutLateArray.push(item.stayoutLateNum)
+              stayOutArray.push(item.stayoutNum)
+            })
+            _this.drawLine(dateArray,stayOutLateArray,stayOutArray)
+          }
         }).catch(function (error) {
           console.log(error)
         })
@@ -323,7 +323,7 @@
       searchSubmitFun:function(){
         /*表格查询*/
         const params = {
-          weekNumber:this.weekValue,
+          weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
           majorId:this.$refs.majorValue.value,
           instructor:this.$refs.instructorValue.value,

@@ -38,7 +38,7 @@
           <div class="daily-data-table-container">
             <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55"></el-table-column>
-              <el-table-column prop="name" label="姓名"></el-table-column>
+              <el-table-column prop="studentName" label="姓名"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
               <el-table-column prop="className" label="班级"></el-table-column>
               <el-table-column prop="collegeName" label="学院名称"></el-table-column>
@@ -76,7 +76,7 @@
           <div class="daily-data-table-container">
             <el-table :data="tableData"  @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55"></el-table-column>
-              <el-table-column prop="name" label="姓名"></el-table-column>
+              <el-table-column prop="studentName" label="姓名"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
               <el-table-column prop="className" label="班级"></el-table-column>
               <el-table-column prop="collegeName" label="学院名称"></el-table-column>
@@ -113,7 +113,7 @@
         <el-tab-pane label="已处理" name="third">
           <div class="daily-data-table-container">
             <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" @selection-change="handleSelectionChange" style="width: 100%">
-              <el-table-column prop="name" label="姓名"></el-table-column>
+              <el-table-column prop="studentName" label="姓名"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
               <el-table-column prop="className" label="班级"></el-table-column>
               <el-table-column prop="collegeName" label="学院名称"></el-table-column>
@@ -423,10 +423,7 @@
         /*发起学生关怀数据查询*/
         startCareData:function (studentIds,operatorId ) {
           const _this = this
-          this.$axios.post('/api/analysis/start-student-care',{
-            'studentIds':studentIds,
-            'operatorId':operatorId
-          }).then(function (res) {
+          this.$axios.post(`/api/analysis/start-student-care?studentIds=${studentIds}&operatorId=${operatorId}`).then(function (res) {
             if(res){
               if(res.data.code === '000000'){
                 let params = {
@@ -452,6 +449,11 @@
             operatorId:operatorId
           }).then(function (res) {
             if(res){
+              _this.$notify({
+                message: res.data.message,
+                type: 'warning',
+                position:'bottom-right'
+              })
               let params = {
                 orgId: _this.$refs.collegeValue.value,
                 majorId: _this.$refs.majorValue.value,
@@ -459,7 +461,7 @@
                 nameOrCode: _this.$refs.studentNameDom.value,
               }
               if (_this.tabActive === 'first') {
-                this.getTableData(params)
+                _this.getTableData(params)
               } else if (_this.tabActive === 'second') {
                 params.careStatus = 1
                 _this.getAlCareTableList(params)
