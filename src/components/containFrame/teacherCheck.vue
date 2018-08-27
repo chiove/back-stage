@@ -64,7 +64,7 @@
            >
           </el-table-column>
           <el-table-column
-            prop="address"
+            prop="clockTime"
             label="打卡时间">
           </el-table-column>
         </el-table>
@@ -154,7 +154,9 @@
       },
       /*查看详情页*/
       handleClick(row) {
-
+        this.tableDetailsData= []
+        this.viewDetails = true
+        this.tableDetailsData.push(row)
       },
       /*下载excel*/
       downLoadFun:function(){
