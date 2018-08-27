@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>大屏</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<div class="QR-body">
+		<div class="QR-header">昨日考勤大屏监控</div>
+		<div class="QR-container">
+			<div class="QR-body-item">
+				<div class="QR-item-row">
+					<div class="QR-item-title">男生晚归人数</div>
+					<div class="QR-item-left" id="stayOutLate">
+						<div class="QR-item-number" name="sixth"></div>
+						<div class="QR-item-number" name="fifth"></div>
+						<div class="QR-item-number" name="fourth"></div>
+						<div class="QR-item-number" name="third"></div>
+						<div class="QR-item-number" name="second"></div>
+            <div class="QR-item-number" name="first"></div>
+            <div class="QR-item-person">人</div>
+					</div>
+				</div>
+				<div class="QR-item-row">
+					<div class="QR-item-title">男生未归人数</div>
+					<div class="QR-item-left" id="stayOut">
+            <div class="QR-item-number" name="sixth"></div>
+            <div class="QR-item-number" name="fifth"></div>
+            <div class="QR-item-number" name="fourth"></div>
+            <div class="QR-item-number" name="third"></div>
+            <div class="QR-item-number" name="second"></div>
+            <div class="QR-item-number" name="first"></div>
+            <div class="QR-item-person">人</div>
+					</div>
+				</div>
+				<div class="QR-item-row">
+					<div class="QR-item-title">男生总人数</div>
+					<div class="QR-item-left" id="total">
+            <div class="QR-item-number" name="sixth"></div>
+            <div class="QR-item-number" name="fifth"></div>
+            <div class="QR-item-number" name="fourth"></div>
+            <div class="QR-item-number" name="third"></div>
+            <div class="QR-item-number" name="second"></div>
+            <div class="QR-item-number" name="first"></div>
+            <div class="QR-item-person">人</div>
+					</div>
+				</div>
+			</div>
+			<div class="QR-body-item">
+				<div class="QR-code-container">
+        </div>
+			</div>
+		</div>
+		<div class="QR-footer">
+			<div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+  $(function () {
+    /*获取文本滚动内容*/
+    $.ajax({
+      url:'http://219.153.12.197:31001/big-screen-monitor/copy-writing',
+      success:function (res) {
+        if(res){
+          $(".QR-footer div").html(res.data)
+        }
+      },
+      error:function (error) {
+        console.log(error)
+      }
+    })
+    /*获取考勤人数*/
+    $.ajax({
+      url:'http://219.153.12.197:31001/big-screen-monitor/data-stat',
+      success:function (res) {
+        if(res){
+          if(res.data.stayoutMaleNum){
+            var  stayOut = res.data.stayoutMaleNum.toString();
+            rendeNumber('stayOut',stayOut);
+          }
+         if(res.data.stayoutLateMaleNum){
+           var  stayOutLate = res.data.stayoutLateMaleNum.toString();
+           rendeNumber('stayOutLate',stayOutLate);
+         }
+         if(res.data.totalMaleNum){
+           var  total = res.data.totalMaleNum.toString();
+           rendeNumber('total',total);
+         }
+        }
+      },
+      error:function (error) {
+        console.log(error)
+      }
+    })
+    function getQRcode(){
+      /*获取二维码*/
+      $.ajax({
+        url:'http://219.153.12.197:31001/big-screen-monitor/qrcode-image',
+        success:function (res) {
+          if(res){
+              var imge = '<img src="http://219.153.12.197:31001/big-screen-monitor/qrcode-image" alt="">'
+              $('.QR-code-container').html(imge)
+          }
+        },
+        error:function (error) {
+          console.log(error)
+        }
+      })
+    }
+    getQRcode()
+    setInterval(getQRcode,20000)
+    function rendeNumber(dom,string) {
+      if(string.length=6){
+        $('#'+dom+' [name=first]').html(string.substring(0,1))
+        $('#'+dom+' [name=second]').html(string.substring(1,2))
+        $('#'+dom+' [name=third]').html(string.substring(2,3))
+        $('#'+dom+' [name=fourth]').html(string.substring(3,4))
+        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
+        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
+      }else if(string.length=5){
+        $('#'+dom+' [name=second]').html(string.substring(1,2))
+        $('#'+dom+' [name=third]').html(string.substring(2,3))
+        $('#'+dom+' [name=fourth]').html(string.substring(3,4))
+        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
+        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
+      }else if(string.length=4){
+        $('#'+dom+' [name=third]').html(string.substring(2,3))
+        $('#'+dom+' [name=fourth]').html(string.substring(3,4))
+        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
+        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
+      }else if(string.length=3){
+        $('#'+dom+' [name=fourth]').html(string.substring(3,4))
+        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
+        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
+      }else if(string.length=2){
+        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
+        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
+      }else if(string.length=1){
+        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
+      }else{
+        $('#'+dom+' [name=sixth]').html()
+      }
+    }
+    function scroll(){
+      var outerWidth = '-'+($('.QR-footer div').outerWidth())+'px'
+      $(".QR-footer").animate({"margin-left":outerWidth},20000,'linear',function(){
+        $(".QR-footer div:eq(0)").appendTo($(".QR-footer"))
+        $(".QR-footer").css({"margin-left":0})
+      })
+    }
+    setInterval(scroll,1000)
+  })
+
+</script>
+</html>
