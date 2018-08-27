@@ -1,0 +1,90 @@
+html,body{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+
+}
+.QR-body{
+	height: 100%;
+	background-image: url('../img/QR-background.png');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+.QR-container{
+	width: 100%;
+	height: calc(100% - 284px);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.QR-header{
+	font-size:48px;
+	font-family:MicrosoftYaHei-Bold;
+	font-weight:bold;
+	color:rgba(224,234,250,1);
+	text-align: center;
+	margin-top: 16px;
+}
+.QR-body-item{
+	width: 50%;
+}
+.QR-item-row{
+	width: 550px;
+	margin: 0 auto;
+}
+.QR-item-title{
+	font-size:34px;
+	font-family:MicrosoftYaHei;
+	font-weight:400;
+	color:rgba(6,124,239,1);
+	margin-bottom: 12px; 
+}
+.QR-item-left{
+	width: 550px;
+	height: 116px;
+	display: flex;
+	background-image: url('../img/QR-containner.png');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	justify-content: flex-start;
+	align-items: center;
+	margin-bottom: 25px
+}
+.QR-item-number{
+	margin-left: 12px;
+	height: 84px;
+	width: 55px;
+	background-image: url('../img/QR-number-container.png');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	font-size:72px;
+	font-family:PingFang-SC-Bold;
+	font-weight:bold;
+	color:rgba(255,255,255,1);
+	display: flex;
+	align-items: center;
+	-webkit-text-stroke:undefined rgba(0,9,38,1);
+	text-stroke:undefined rgba(0,9,38,1);
+	justify-content: center;
+}
+.QR-code-container{
+	height: 460px;
+	width: 460px;
+	margin: 0 auto;
+	background-image: url('../img/QR-code.png');
+}
+.QR-footer{
+	position: fixed;
+	bottom: 0;
+	height: 204px;
+	width: 100%;
+	font-size:126px;
+	font-family:MicrosoftYaHei;
+	font-weight:400;
+	color:rgba(233,243,252,1);
+	overflow: hidden;
+	white-space: nowrap;
+	
+}
