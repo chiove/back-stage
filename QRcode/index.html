@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>大屏</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<div class="QR-body">
+		<div class="QR-header">昨日考勤大屏监控</div>
+		<div class="QR-container">
+			<div class="QR-body-item">
+				<div class="QR-item-row">
+					<div class="QR-item-title">男生晚归人数</div>
+					<div class="QR-item-left">
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+					</div>
+				</div>
+				<div class="QR-item-row">
+					<div class="QR-item-title">男生未归人数</div>
+					<div class="QR-item-left">
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+					</div>
+				</div>
+				<div class="QR-item-row">
+					<div class="QR-item-title">男生总人数</div>
+					<div class="QR-item-left">
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+						<div class="QR-item-number">2</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="QR-body-item">
+				<div class="QR-code-container"></div>
+			</div>
+		</div>
+		<div class="QR-footer">
+			技术学院热烈欢迎2018届新生入学
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	var positionRight=0;
+	$('.QR-footer').animate(
+			{right:'1080px'},
+			20000
+		);
+/*	setInterval(function(){
+		var positionRightString = (positionRight++)+'px'
+		
+	},1000)*/
+</script>
+</html>
