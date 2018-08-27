@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>大屏</title>
-	<link rel="stylesheet" type="text/css" href="css/common.css">
-	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+  <meta charset="UTF-8">
+  <title>大屏</title>
+  <link rel="stylesheet" type="text/css" href="css/common.css">
+  <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-	<div class="QR-body">
-		<div class="QR-header">昨日考勤大屏监控</div>
-		<div class="QR-container">
-			<div class="QR-body-item">
-				<div class="QR-item-row">
-					<div class="QR-item-title">男生晚归人数</div>
-					<div class="QR-item-left" id="stayOutLate">
-						<div class="QR-item-number" name="sixth"></div>
-						<div class="QR-item-number" name="fifth"></div>
-						<div class="QR-item-number" name="fourth"></div>
-						<div class="QR-item-number" name="third"></div>
-						<div class="QR-item-number" name="second"></div>
-            <div class="QR-item-number" name="first"></div>
-            <div class="QR-item-person">人</div>
-					</div>
-				</div>
-				<div class="QR-item-row">
-					<div class="QR-item-title">男生未归人数</div>
-					<div class="QR-item-left" id="stayOut">
-            <div class="QR-item-number" name="sixth"></div>
-            <div class="QR-item-number" name="fifth"></div>
-            <div class="QR-item-number" name="fourth"></div>
-            <div class="QR-item-number" name="third"></div>
-            <div class="QR-item-number" name="second"></div>
-            <div class="QR-item-number" name="first"></div>
-            <div class="QR-item-person">人</div>
-					</div>
-				</div>
-				<div class="QR-item-row">
-					<div class="QR-item-title">男生总人数</div>
-					<div class="QR-item-left" id="total">
-            <div class="QR-item-number" name="sixth"></div>
-            <div class="QR-item-number" name="fifth"></div>
-            <div class="QR-item-number" name="fourth"></div>
-            <div class="QR-item-number" name="third"></div>
-            <div class="QR-item-number" name="second"></div>
-            <div class="QR-item-number" name="first"></div>
-            <div class="QR-item-person">人</div>
-					</div>
-				</div>
-			</div>
-			<div class="QR-body-item">
-				<div class="QR-code-container">
+<div class="QR-body">
+  <div class="QR-header">昨日考勤大屏监控</div>
+  <div class="QR-container">
+    <div class="QR-body-item">
+      <div class="QR-item-row">
+        <div class="QR-item-title">女生晚归人数</div>
+        <div class="QR-item-left" id="stayOutLate">
+          <div class="QR-item-number" name="sixth"></div>
+          <div class="QR-item-number" name="fifth"></div>
+          <div class="QR-item-number" name="fourth"></div>
+          <div class="QR-item-number" name="third"></div>
+          <div class="QR-item-number" name="second"></div>
+          <div class="QR-item-number" name="first"></div>
+          <div class="QR-item-person">人</div>
         </div>
-			</div>
-		</div>
-		<div class="QR-footer">
-			<div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-		</div>
-	</div>
+      </div>
+      <div class="QR-item-row">
+        <div class="QR-item-title">女生未归人数</div>
+        <div class="QR-item-left" id="stayOut">
+          <div class="QR-item-number" name="sixth"></div>
+          <div class="QR-item-number" name="fifth"></div>
+          <div class="QR-item-number" name="fourth"></div>
+          <div class="QR-item-number" name="third"></div>
+          <div class="QR-item-number" name="second"></div>
+          <div class="QR-item-number" name="first"></div>
+          <div class="QR-item-person">人</div>
+        </div>
+      </div>
+      <div class="QR-item-row">
+        <div class="QR-item-title">女生总人数</div>
+        <div class="QR-item-left" id="total">
+          <div class="QR-item-number" name="sixth"></div>
+          <div class="QR-item-number" name="fifth"></div>
+          <div class="QR-item-number" name="fourth"></div>
+          <div class="QR-item-number" name="third"></div>
+          <div class="QR-item-number" name="second"></div>
+          <div class="QR-item-number" name="first"></div>
+          <div class="QR-item-person">人</div>
+        </div>
+      </div>
+    </div>
+    <div class="QR-body-item">
+      <div class="QR-code-container">
+      </div>
+    </div>
+  </div>
+  <div class="QR-footer">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
 </body>
 <script type="text/javascript">
   $(function () {
@@ -81,18 +81,18 @@
       url:'http://219.153.12.197:31001/big-screen-monitor/data-stat',
       success:function (res) {
         if(res){
-          if(res.data.stayoutMaleNum){
-            var  stayOut = res.data.stayoutMaleNum.toString();
+          if(res.data.stayoutFemaleNum){
+            var  stayOut = res.data.stayoutFemaleNum.toString();
             rendeNumber('stayOut',stayOut);
           }
-         if(res.data.stayoutLateMaleNum){
-           var  stayOutLate = res.data.stayoutLateMaleNum.toString();
-           rendeNumber('stayOutLate',stayOutLate);
-         }
-         if(res.data.totalMaleNum){
-           var  total = res.data.totalMaleNum.toString();
-           rendeNumber('total',total);
-         }
+          if(res.data.stayoutLateFemaleNum){
+            var  stayOutLate = res.data.stayoutLateFemaleNum.toString();
+            rendeNumber('stayOutLate',stayOutLate);
+          }
+          if(res.data.totalFemaleNum){
+            var  total = res.data.totalFemaleNum.toString();
+            rendeNumber('total',total);
+          }
         }
       },
       error:function (error) {
@@ -105,8 +105,8 @@
         url:'http://219.153.12.197:31001/big-screen-monitor/qrcode-image',
         success:function (res) {
           if(res){
-              var imge = '<img src="http://219.153.12.197:31001/big-screen-monitor/qrcode-image" alt="">'
-              $('.QR-code-container').html(imge)
+            var imge = '<img src="http://219.153.12.197:31001/big-screen-monitor/qrcode-image" alt="">'
+            $('.QR-code-container').html(imge)
           }
         },
         error:function (error) {
@@ -157,6 +157,5 @@
     }
     setInterval(scroll,1000)
   })
-
 </script>
 </html>
