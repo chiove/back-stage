@@ -154,9 +154,19 @@
       },
       /*查看详情页*/
       handleClick(row) {
-        this.tableDetailsData= []
         this.viewDetails = true
-        this.tableDetailsData.push(row)
+        const _this = this
+        this.$axios.get('/api/instructor-clock',{
+          params:{
+            instructorId:row.userId
+          }
+        }).then(function (res) {
+          if(res){
+            _this.tableDetailsData= res.data.result
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       },
       /*下载excel*/
       downLoadFun:function(){
