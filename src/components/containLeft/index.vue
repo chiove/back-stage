@@ -56,6 +56,9 @@
   line-height: .4rem;
   text-align: center;
 }
+.left_list ul li{
+  min-width: 0!important;
+}
 .left_list ul li a{
   display: block;
   color: rgba(255,255,255,.8);
