@@ -52,10 +52,10 @@
     }
   },
   created(){
-    if(sessionStorage.getItem("content")){
+    /*if(sessionStorage.getItem("content")){
       this.data = JSON.parse(sessionStorage.getItem("content"));
       console.log(this.data)
-    }
+    }*/
   },
   methods:{
     // 跳回后台login页面
@@ -68,7 +68,7 @@
 .top{
   font-size: .16rem;
   width:100%;
-  height:.6rem; 
+  height:.6rem;
   display: flex;
 }
 .top_logo{
@@ -150,7 +150,7 @@
   vertical-align: top;
   border-radius: 0;
   border:none;
-  background: url(../../assets/images/more.png) no-repeat; 
+  background: url(../../assets/images/more.png) no-repeat;
   background-size: 100% 100%;
 }
 .el-dropdown-menu{

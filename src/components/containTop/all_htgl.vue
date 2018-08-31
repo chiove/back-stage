@@ -16,7 +16,7 @@
  export default {
   name: 'allhtgl',
   data:function(){
-    return {  
+    return {
       item:[],
     }
   },
@@ -26,7 +26,7 @@
     }
   },
   created(){
-    this.getData()
+    /*this.getData()*/
   },
   methods:{
     getData(){
@@ -45,7 +45,7 @@
       }
     }
   },
- 
+
 }
 </script>
 <style>
