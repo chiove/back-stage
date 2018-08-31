@@ -99,6 +99,7 @@
   export default {
     name: "dailyData",
     mounted:function(){
+      this.userId = localStorage.getItem('userId')
       /*获取周数下拉列表*/
       this.getWeekListData()
       /*默认渲染环形图*/
@@ -110,9 +111,12 @@
       /*表格渲染*/
       this.getTableData({weekNum:this.weekValue})
     },
+    activated:function () {
+      this.userId = localStorage.getItem('userId')
+    },
     data(){
       return {
-        userId:1,/*用户ID*/
+        userId:'',/*用户ID*/
         weekValue:1,/*周数下拉列表默认值*/
         weekListData:[{value:1,label:'第一周'}],/*周数下拉列表*/
         collegeNames:'全部学院',/*学院名称*/

@@ -106,6 +106,7 @@
                 }
                 var token = res.data.data.token
                 sessionStorage.setItem("token",token)
+                localStorage.setItem("userId",res.data.data.userId)
                 self.$router.push({ path: '/index' });
               }else {
                 console.log('失败')

@@ -150,6 +150,7 @@
     export default {
       name: "studentsCare",
       mounted: function () {
+        this.userId = localStorage.getItem('userId')
         let params = {
           orgId: this.$refs.collegeValue.value,
           majorId: this.$refs.majorValue.value,
@@ -161,9 +162,12 @@
         /*默认发起未关怀表格数据*/
         this.getTableData(params)
       },
+      activated:function () {
+        this.userId = localStorage.getItem('userId')
+      },
       data() {
         return {
-          userId: 100725, /*用户ID*/
+          userId: '', /*用户ID*/
           collegeListDataValue: '', /*学院下拉列表默认值*/
           collegeListData: [], /*学院下拉列表*/
           majorListDataValue: '', /*专业下拉列表默认值*/

@@ -78,6 +78,7 @@
     export default {
       name: "studentsSearch",
       mounted:function(){
+        this.userId = localStorage.getItem('userId')
         /*查询学院下拉列表*/
         this.getCollegeListData()
         /*查询宿舍下拉列表*/
@@ -85,9 +86,12 @@
         /*查询表格数据*/
         this.getTableData()
       },
+      activated:function () {
+        this.userId = localStorage.getItem('userId')
+      },
       data(){
         return {
-          userId:1,/*用户ID*/
+          userId:'',/*用户ID*/
           collegeListDataValue:'',/*学院下拉列表默认值*/
           collegeListData:[],/*学院下拉列表*/
           majorListDataValue:'',/*专业下拉列表默认值*/

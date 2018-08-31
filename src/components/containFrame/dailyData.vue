@@ -126,6 +126,7 @@
     export default {
       name: "dailyData",
       mounted:function(){
+        this.userId = localStorage.getItem('userId')
         const newDate = getDate.getCurrentTime('date')
         const yesterday = `${newDate.year}-${newDate.month}-${newDate.day-1}`
         this.searchDateValue = yesterday;
@@ -139,6 +140,9 @@
         }
         this.getTableData(params)
       },
+      activated:function () {
+        this.userId = localStorage.getItem('userId')
+      },
       data(){
           return {
             /*设置时间选择范围*/
@@ -151,7 +155,7 @@
             collegeNames:'全部学院',/*学院名称*/
             lastNightStayoutLateNum:0,/*晚归人数*/
             lastNightStayoutNum:0,/*未归人数*/
-            userId:100725,/*用户ID*/
+            userId:'',/*用户ID*/
             searchDateValue:'',/*初始化为昨天时间*/
             collegeListDataValue:'',/*学院下拉列表默认值*/
             collegeListData:[],/*学院下拉列表*/
