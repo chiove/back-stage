@@ -62,7 +62,7 @@
               :value="item.majorId">
             </el-option>
           </el-select>
-          <el-select v-model="searchStatus" placeholder="状态不限" @change="searchStatusFun" size="mini" class="tool-bar-search-select">
+          <!--<el-select v-model="searchStatus" placeholder="状态不限" @change="searchStatusFun" size="mini" class="tool-bar-search-select">
             <el-option
               key="1"
               label="二级学院"
@@ -73,7 +73,7 @@
               label="学生处"
               value="2">
             </el-option>
-          </el-select>
+          </el-select>-->
           <el-select v-model="instructorListDataValue" ref="instructorValue" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
             <el-option
               v-for="item in instructorListData"
@@ -168,13 +168,15 @@
             pageNo:1,/*当前页*/
             pageTotal:1,/*总页数*/
             tableData: [],/*表格数据*/
-            loadingStatus:false/*加载显示*/
+            loadingStatus:false,/*加载显示*/
+            dateValue:''/*选择后的时间*/
           }
       },
       methods: {
         /*日期选择后触发事件*/
         dateChangeFun:function(data){
           const dateValue = `${data.getFullYear()}-${data.getMonth()+1}-${data.getDate()}`
+          this.dateValue = dateValue
           /*学院考勤人数*/
           this.checkTotalFun(dateValue)
           /*表格查询*/
@@ -247,8 +249,11 @@
         /*搜索按钮搜索*/
         searchSubmitFun:function(){
           /*表格查询*/
+          if(!this.dateValue){
+            this.dateValue = this.searchDateValue
+          }
           const params = {
-            date:this.$refs.dateValue.value,
+            date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
             majorId:this.$refs.majorValue.value,
             instructor:this.$refs.instructorValue.value,
@@ -281,8 +286,11 @@
           }else if(data.order==="descending"){
             descOrAsc='desc'
           }
+          if(!this.dateValue){
+            this.dateValue = this.searchDateValue
+          }
           const params = {
-            date:this.$refs.dateValue.value,
+            date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
             majorId:this.$refs.majorValue.value,
             instructor:this.$refs.instructorValue.value,
@@ -303,8 +311,11 @@
         /*分页查询*/
         handleCurrentChange(val) {
           /*表格查询*/
+          if(!this.dateValue){
+            this.dateValue = this.searchDateValue
+          }
           const params = {
-            date:this.$refs.dateValue.value,
+            date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
             majorId:this.$refs.majorValue.value,
             instructor:this.$refs.instructorValue.value,
