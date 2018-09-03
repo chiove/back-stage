@@ -52,8 +52,8 @@
         <el-table-column prop="dormitoryName" label="寝室号"></el-table-column>
         <el-table-column prop="bedCode" label="床号"></el-table-column>
         <el-table-column prop="totalCared" label="被关怀次数"></el-table-column>
-        <el-table-column prop="totalStayOut" label="连续未归天数" sortable="custom"></el-table-column>
-        <el-table-column prop="totalStayOutLate" label="连续晚归天数" sortable="custom"></el-table-column>
+        <el-table-column prop="totalStayOut" label="累计未归天数" sortable="custom"></el-table-column>
+        <el-table-column prop="totalStayOutLate" label="累计晚归天数" sortable="custom"></el-table-column>
         <el-table-column label="个人详情">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
