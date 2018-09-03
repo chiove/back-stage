@@ -112,8 +112,7 @@
       /*查询学院下拉列表*/
       getCollegeListData:function(){
         const _this = this
-        this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
-        }).then(function (res) {
+        this.$axios.get(process.env.API_HOST+'/select-data/secondary-college/all').then(function (res) {
           _this.collegeListData = res.data.data
         }).catch(function (error) {
           console.log(error)
@@ -135,7 +134,7 @@
         this.$axios.get(process.env.API_HOST+'analysis/instructor-stat',{params:params
         }).then(function (res) {
           _this.tableData = res.data.data.result
-          _this.pageTotal  =res.data.data.totalPages
+          _this.pageTotal  =res.data.data.totalCount
           _this.pageNo  =res.data.data.pageNo
         }).catch(function (error) {
           console.log(error)

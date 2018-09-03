@@ -14,17 +14,17 @@
         <el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
           <el-option
             v-for="item in majorListData"
-            :key="item.buildingId"
-            :label="item.buildingName"
-            :value="item.buildingId">
+            :key="item.majorId"
+            :label="item.majorName"
+            :value="item.majorId">
           </el-option>
         </el-select>
         <el-select v-model="buildListDataValue" ref="buildDom" placeholder="全部宿舍"  size="mini" class="tool-bar-search-select">
           <el-option
             v-for="item in buildListData"
-            :key="item.majorId"
-            :label="item.majorName"
-            :value="item.majorId">
+            :key="item.buildingId"
+            :label="item.buildingName"
+            :value="item.buildingId">
           </el-option>
         </el-select>
         <el-select v-model="instructorListDataValue" ref="instructorValue" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
@@ -111,8 +111,7 @@
         /*查询学院下拉列表*/
         getCollegeListData:function(){
           const _this = this
-          this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
-          }).then(function (res) {
+          this.$axios.get(process.env.API_HOST+'/select-data/secondary-college/all').then(function (res) {
             _this.collegeListData = res.data.data
           }).catch(function (error) {
             console.log(error)
@@ -152,8 +151,7 @@
         /*查询宿舍下拉列表*/
         getBuildListData:function(){
           const _this = this
-          this.$axios.get(process.env.API_HOST+'dormitory-building/query-by-user',{params:{userId:_this.userId}
-          }).then(function (res) {
+          this.$axios.get(process.env.API_HOST+'/select-data/dormitory-building/all').then(function (res) {
             _this.buildListData = res.data.data
           }).catch(function (error) {
             console.log(error)
@@ -178,7 +176,7 @@
           this.$axios.get(process.env.API_HOST+'data-recheck/student-clock-care-stat',{params:params
           }).then(function (res) {
             _this.tableData = res.data.data.result
-            _this.pageTotal =res.data.data.totalPages
+            _this.pageTotal =res.data.data.totalCount
             _this.pageNo =res.data.data.pageNo
           }).catch(function (error) {
             console.log(error)

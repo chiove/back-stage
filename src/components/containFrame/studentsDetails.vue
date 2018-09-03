@@ -267,7 +267,7 @@
           if(res){
             _this.careListData = res.data.result
             _this.carePageNo =  res.data.pageNo
-            _this.carePageTotal = res.data.totalPages
+            _this.carePageTotal = res.data.totalCount
           }
         }).catch(function (error) {
           console.log(error)

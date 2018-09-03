@@ -160,7 +160,7 @@
         const _this = this
         this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-week',{
           params:{
-            weekNum :weekNumber,
+            weekNumber :weekNumber,
             orgId:orgId
           }
         }).then(function (res) {
@@ -176,14 +176,16 @@
         this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-day-of-week',{params:{weekNum:weekNumber,orgId:orgId}
         }).then(function (res) {
           if(res){
-            /*渲染折线图*/
-            let dateArray=[],stayOutLateArray=[],stayOutArray=[]
-            res.data.data.forEach(function (item,index) {
-              dateArray.push(item.date)
-              stayOutLateArray.push(item.stayoutLateNum)
-              stayOutArray.push(item.stayoutNum)
-            })
-            _this.drawLine(dateArray,stayOutLateArray,stayOutArray)
+            if(res.data.data){
+              /*渲染折线图*/
+              let dateArray=[],stayOutLateArray=[],stayOutArray=[]
+              res.data.data.forEach(function (item,index) {
+                dateArray.push(item.date)
+                stayOutLateArray.push(item.stayoutLateNum)
+                stayOutArray.push(item.stayoutNum)
+              })
+              _this.drawLine(dateArray,stayOutLateArray,stayOutArray)
+            }
           }
         }).catch(function (error) {
           console.log(error)
@@ -282,8 +284,7 @@
       /*查询学院下拉列表*/
       getCollegeListData:function(){
         const _this = this
-        this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
-        }).then(function (res) {
+        this.$axios.get(process.env.API_HOST+'/select-data/secondary-college/all').then(function (res) {
           _this.collegeListData = res.data.data
         }).catch(function (error) {
           console.log(error)
@@ -292,21 +293,21 @@
       /*学院下拉选择后触发事件*/
       collegeSelectFun:function(data){
         const _this = this
-        this.collegeListData.forEach(function (item,index) {
-          if(item.collegeId===data){
-            _this.collegeNames = item.collegeName
-            /*默认渲染环形图*/
-            this.getRingChartData(_this.weekValue,item.collegeId)
-            /*默认渲染折线图*/
-            this.getLineChartData(_this.weekValue,item.collegeId)
-          }
-        })
         /*查询专业下拉列表*/
         this.$axios.get(process.env.API_HOST+'select-data/major-info/all',{params:{orgId:data}
         }).then(function (res) {
           _this.majorListData = res.data.data
         }).catch(function (error) {
           console.log(error)
+        })
+        this.collegeListData.forEach(function (item,index) {
+          if(item.collegeId===data){
+            _this.collegeNames = item.collegeName
+            /*默认渲染环形图*/
+            _this.getRingChartData(_this.weekValue,item.collegeId)
+            /*默认渲染折线图*/
+            _this.getLineChartData(_this.weekValue,item.collegeId)
+          }
         })
       },
       /*专业下拉选择后触发事件*/
@@ -343,7 +344,7 @@
         }).then(function (res) {
           _this.tableData = res.data.data.result
           _this.studentsTotal = res.data.data.totalCount
-          _this.pageTotal  =res.data.data.totalPages
+          _this.pageTotal  =res.data.data.totalCount
           _this.pageNo  =res.data.data.pageNo
         }).catch(function (error) {
           console.log(error)
