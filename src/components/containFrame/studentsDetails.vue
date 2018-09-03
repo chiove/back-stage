@@ -307,6 +307,17 @@
           }
         }).then(function (res) {
           if(res){
+            res.data.data.forEach(function (item,index) {
+              if(item.clockStatus==1){
+                item.clockStatus = '未打卡'
+              }else  if(item.clockStatus==2){
+                item.clockStatus = '到勤'
+              }else  if(item.clockStatus==3){
+                item.clockStatus = '晚归'
+              }else  if(item.clockStatus==4){
+                item.clockStatus = '未归'
+              }
+            })
             _this.historyListData = res.data.data
           }
         }).catch(function (error) {
