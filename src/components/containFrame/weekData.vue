@@ -160,7 +160,7 @@
         const _this = this
         this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-week',{
           params:{
-            weekNumber :weekNumber,
+            weekNum :weekNumber,
             orgId:orgId
           }
         }).then(function (res) {
