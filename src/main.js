@@ -22,7 +22,6 @@ Vue.prototype.$md5 = md5
 Vue.prototype.$echarts = echarts
 Vue.prototype.$axios.interceptors.request.use(
   config => {
-    console.log(config)
     if(sessionStorage.getItem('token')){
       let paramsData = sessionStorage.getItem('token')
       config.headers = {

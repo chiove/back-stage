@@ -85,7 +85,11 @@
       /*查询学院下拉列表*/
       this.getCollegeListData()
       /*查询表格数据*/
-      this.getTableData()
+      const params = {
+        orgId:this.$refs.collegeValue.value,
+        nameOrCode:this.$refs.studentNameDom.value,
+      }
+      this.getTableData(params)
     },
     activated:function () {
       this.userId = localStorage.getItem('userId')
