@@ -108,7 +108,7 @@
       /*查询学院下拉列表*/
       getCollegeListData:function(){
         const _this = this
-        this.$axios.get('/api/select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
+        this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
         }).then(function (res) {
           _this.collegeListData = res.data.data
         }).catch(function (error) {
@@ -128,7 +128,7 @@
       getTableData:function(params){
         this.loadingStatus = true
         const _this = this
-        this.$axios.get('/api/analysis/instructor-stat',{params:params
+        this.$axios.get(process.env.API_HOST+'analysis/instructor-stat',{params:params
         }).then(function (res) {
           _this.tableData = res.data.data.result
           _this.pageTotal  =res.data.data.totalPages
@@ -160,7 +160,7 @@
       handleClick(row) {
         this.viewDetails = true
         const _this = this
-        this.$axios.get('/api/instructor-clock',{
+        this.$axios.get(process.env.API_HOST+'instructor-clock',{
           params:{
             instructorId:row.userId
           }

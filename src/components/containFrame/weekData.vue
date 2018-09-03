@@ -138,7 +138,7 @@
       /*获取周数下拉列表*/
       getWeekListData:function(){
        const _this = this
-        this.$axios.get('/api/select-data/week-info/all')
+        this.$axios.get(process.env.API_HOST+'select-data/week-info/all')
           .then(function (res) {
             _this.weekListData = res.data.data
         }).catch(function (error) {
@@ -158,7 +158,7 @@
       /*查询环形图数据*/
       getRingChartData:function(weekNumber,orgId){
         const _this = this
-        this.$axios.get('/api/analysis/exeception-stat-by-week',{
+        this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-week',{
           params:{
             weekNumber :weekNumber,
             orgId:orgId
@@ -173,7 +173,7 @@
       /*查询折线图数据*/
       getLineChartData:function(weekNumber,orgId){
         const _this = this
-        this.$axios.get('/api/analysis/exeception-stat-by-day-of-week',{params:{weekNum:weekNumber,orgId:orgId}
+        this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-day-of-week',{params:{weekNum:weekNumber,orgId:orgId}
         }).then(function (res) {
           if(res){
             /*渲染折线图*/
@@ -282,7 +282,7 @@
       /*查询学院下拉列表*/
       getCollegeListData:function(){
         const _this = this
-        this.$axios.get('/api/select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
+        this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
         }).then(function (res) {
           _this.collegeListData = res.data.data
         }).catch(function (error) {
@@ -302,7 +302,7 @@
           }
         })
         /*查询专业下拉列表*/
-        this.$axios.get('/api/select-data/major-info/all',{params:{orgId:data}
+        this.$axios.get(process.env.API_HOST+'select-data/major-info/all',{params:{orgId:data}
         }).then(function (res) {
           _this.majorListData = res.data.data
         }).catch(function (error) {
@@ -316,7 +316,7 @@
           majorId:this.$refs.collegeValue.value,
           orgId:data
         }
-        this.$axios.get('/api/select-data/instructor-info/all',{params:params
+        this.$axios.get(process.env.API_HOST+'select-data/instructor-info/all',{params:params
         }).then(function (res) {
           _this.instructorListData = res.data.data
         }).catch(function (error) {
@@ -339,7 +339,7 @@
       getTableData:function(params){
         this.loadingStatus = true
         const _this = this
-        this.$axios.get('/api/analysis/exeception-clock-by-week',{params:params
+        this.$axios.get(process.env.API_HOST+'analysis/exeception-clock-by-week',{params:params
         }).then(function (res) {
           _this.tableData = res.data.data.result
           _this.studentsTotal = res.data.data.totalCount

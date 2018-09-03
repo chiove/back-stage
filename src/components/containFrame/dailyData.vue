@@ -186,7 +186,7 @@
         /*考勤数查询*/
         checkTotalFun:function(date,orgId){
           const _this = this
-          this.$axios.get('/api/analysis/exeception-stat-by-day',{
+          this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-day',{
             params:{
               date:date,
               orgId:orgId
@@ -201,7 +201,7 @@
         /*查询学院下拉列表*/
         getCollegeListData:function(status){
           const _this = this
-          this.$axios.get('/api/select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
+          this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user',{params:{userId:_this.userId}
           }).then(function (res) {
             _this.collegeListData = res.data.data
           }).catch(function (error) {
@@ -218,7 +218,7 @@
             }
           })
           /*查询专业下拉列表*/
-          this.$axios.get('/api/select-data/major-info/all',{params:{orgId:data}
+          this.$axios.get(process.env.API_HOST+'select-data/major-info/all',{params:{orgId:data}
           }).then(function (res) {
             _this.majorListData = res.data.data
             }).catch(function (error) {
@@ -237,7 +237,7 @@
             majorId:this.$refs.collegeValue.value,
             orgId:data
           }
-          this.$axios.get('/api/select-data/instructor-info/all',{params:params
+          this.$axios.get(process.env.API_HOST+'select-data/instructor-info/all',{params:params
           }).then(function (res) {
             console.log(res)
             _this.instructorListData = res.data.data
@@ -261,7 +261,7 @@
         getTableData:function(params){
           this.loadingStatus = true
           const _this = this
-          this.$axios.get('/api/analysis/exeception-clock-by-day',{params:params
+          this.$axios.get(process.env.API_HOST+'analysis/exeception-clock-by-day',{params:params
           }).then(function (res) {
               _this.tableData = res.data.data.result
               _this.studentsTotal = res.data.data.totalCount

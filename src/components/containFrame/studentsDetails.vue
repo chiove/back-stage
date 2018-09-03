@@ -257,7 +257,7 @@
       getAlCareListData:function () {
         this.loadingStatus = true
         const _this = this
-        this.$axios.get('/api/care-student',{
+        this.$axios.get(process.env.API_HOST+'care-student',{
           params:{
             studentId:_this.studentId,
             pageNo:_this.carePageNo,
@@ -279,7 +279,7 @@
       getClockListData:function () {
         this.loadingStatus = true
         const _this = this
-        this.$axios.get('/api/student-clock',{
+        this.$axios.get(process.env.API_HOST+'student-clock',{
           params:{
             studentId:_this.studentId,
             month:_this.month,
@@ -299,7 +299,7 @@
       getHistoryClockListData:function () {
         this.loadingStatus = true
         const _this = this
-        this.$axios.get('/api/student-clock',{
+        this.$axios.get(process.env.API_HOST+'student-clock',{
           params:{
             studentId:_this.studentId,
             month:_this.month,
@@ -354,7 +354,7 @@
         if(this.ruleForm.remark&&this.ruleForm.clockStatus){
           this.changeStatus = false
           const _this = this
-          this.$axios.put('/api/student-clock',{
+          this.$axios.put(process.env.API_HOST+'student-clock',{
             appType:2,
             id:this.studentId,
             operatorName:this.operatorNameParam,

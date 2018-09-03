@@ -188,7 +188,7 @@
         /*查询学院下拉列表*/
         getCollegeListData: function () {
           const _this = this
-          this.$axios.get('/api/select-data/secondary-college/query-by-user', {
+          this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user', {
             params: {userId: _this.userId}
           }).then(function (res) {
             _this.collegeListData = res.data.data
@@ -205,7 +205,7 @@
             }
           })
           /*查询专业下拉列表*/
-          this.$axios.get('/api/select-data/major-info/all', {
+          this.$axios.get(process.env.API_HOST+'select-data/major-info/all', {
             params: {orgId: data}
           }).then(function (res) {
             _this.majorListData = res.data.data
@@ -220,7 +220,7 @@
             majorId: this.$refs.collegeValue.value,
             orgId: data
           }
-          this.$axios.get('/api/select-data/instructor-info/all', {
+          this.$axios.get(process.env.API_HOST+'select-data/instructor-info/all', {
             params: params
           }).then(function (res) {
             _this.instructorListData = res.data.data
@@ -251,7 +251,7 @@
         getTableData: function (params) {
           this.loadingStatus = true
           const _this = this
-          this.$axios.get('/api/analysis/care/can-start', {
+          this.$axios.get(process.env.API_HOST+'analysis/care/can-start', {
             params: params
           }).then(function (res) {
             _this.tableData = res.data.data.result
@@ -268,7 +268,7 @@
         getAlCareTableList: function (params) {
           this.loadingStatus = true
           const _this = this
-          this.$axios.get('/api/analysis/student-care', {
+          this.$axios.get(process.env.API_HOST+'analysis/student-care', {
             params: params
           }).then(function (res) {
             _this.tableData = res.data.data.result
@@ -427,7 +427,7 @@
         /*发起学生关怀数据查询*/
         startCareData:function (studentIds,operatorId ) {
           const _this = this
-          this.$axios.post(`/api/analysis/start-student-care?studentIds=${studentIds}&operatorId=${operatorId}`).then(function (res) {
+          this.$axios.post(`${process.env.API_HOST}analysis/start-student-care?studentIds=${studentIds}&operatorId=${operatorId}`).then(function (res) {
             if(res){
               if(res.data.code === '000000'){
                 let params = {
@@ -448,7 +448,7 @@
         /*删除学生关怀*/
         deleteCareData:function (careIds,operatorId) {
           const _this = this
-          this.$axios.put('/api/analysis/delete-student-care',{
+          this.$axios.put(process.env.API_HOST+'analysis/delete-student-care',{
             careIds:careIds,
             operatorId:operatorId
           }).then(function (res) {
