@@ -71,7 +71,6 @@
         <el-table-column prop="buildingName" label="宿舍楼栋"></el-table-column>
         <el-table-column prop="dormitoryName" label="寝室号"></el-table-column>
         <el-table-column prop="bedCode" label="床号"></el-table-column>
-        <el-table-column prop="clockStatus" label="昨日考勤状态"></el-table-column>
         <el-table-column prop="stayoutDays" label="周未归次数" sortable="custom"></el-table-column>
         <el-table-column prop="stayoutLateDays" label="周晚归次数" sortable="custom"></el-table-column>
         <el-table-column label="个人详情">

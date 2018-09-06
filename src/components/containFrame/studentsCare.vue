@@ -50,6 +50,7 @@
               <el-table-column prop="totalCared" label="被关怀次数"></el-table-column>
               <el-table-column prop="continuousStayoutDays" label="连续未归天数" sortable="custom"></el-table-column>
               <el-table-column prop="continuousStayoutLateDays" label="连续晚归天数" sortable="custom"></el-table-column>
+              <el-table-column prop="careStatus" label="关怀状态"></el-table-column>
               <el-table-column label="个人详情">
                 <template slot-scope="scope">
                   <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -77,6 +78,7 @@
             <el-table :data="tableData"  @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55"></el-table-column>
               <el-table-column prop="studentName" label="姓名"></el-table-column>
+              <el-table-column prop="taskCreateTime" label="任务发起时间"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
               <el-table-column prop="className" label="班级"></el-table-column>
               <el-table-column prop="collegeName" label="学院名称"></el-table-column>
@@ -98,7 +100,7 @@
           </div>
           <div class="daily-data-pagination-container">
             <div>
-              <el-button type="primary" size="mini" @click="deleteCareFun">撤销关怀</el-button>
+              <el-button type="primary" size="mini" @click="deleteCareFun">撤销发起</el-button>
             </div>
             <el-pagination
               background

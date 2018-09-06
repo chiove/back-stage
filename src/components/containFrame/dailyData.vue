@@ -62,7 +62,7 @@
               :value="item.majorId">
             </el-option>
           </el-select>
-          <!--<el-select v-model="searchStatus" placeholder="状态不限" @change="searchStatusFun" size="mini" class="tool-bar-search-select">
+          <el-select v-model="searchStatus" placeholder="状态不限" @change="searchStatusFun" size="mini" class="tool-bar-search-select">
             <el-option
               key="1"
               label="二级学院"
@@ -73,7 +73,7 @@
               label="学生处"
               value="2">
             </el-option>
-          </el-select>-->
+          </el-select>
           <el-select v-model="instructorListDataValue" ref="instructorValue" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
             <el-option
               v-for="item in instructorListData"
@@ -161,7 +161,7 @@
             collegeListData:[],/*学院下拉列表*/
             majorListDataValue:'',/*专业下拉列表默认值*/
             majorListData:[],/*专业下拉列表*/
-            searchStatus:'1',/*查询状态*/
+            searchStatus:'',/*查询状态*/
             instructorListDataValue:'',/*辅导员下拉列表默认值*/
             instructorListData:[],/*辅导员下拉列表*/
             studentNameValue:'',/*学号，姓名默认值*/
