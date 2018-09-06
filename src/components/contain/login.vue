@@ -2,7 +2,7 @@
   <div class="main-body">
     <div class="main_logo">
       <img src="../../assets/images/loginlogo.png">
-      <span>平台后台管理</span>
+      <span>晚归考勤分析系统</span>
     </div>
     <div class="main">
       <el-form :model="ruleForm" :rules="rules2" ref="ruleForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">

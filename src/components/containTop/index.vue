@@ -8,7 +8,7 @@
       <el-button v-popover:popover5></el-button>
     </div>
     <div class="top_right_h3">
-      <h3>云华数据开放平台</h3>
+      <h3>晚归考勤分析系统</h3>
       <span v-if="data.xxmc">{{data.xxmc}}</span>
       <!-- <span v-else>云华大学</span> -->
     </div>
