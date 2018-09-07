@@ -50,7 +50,6 @@
               <el-table-column prop="totalCared" label="被关怀次数"></el-table-column>
               <el-table-column prop="continuousStayoutDays" label="连续未归天数" sortable="custom"></el-table-column>
               <el-table-column prop="continuousStayoutLateDays" label="连续晚归天数" sortable="custom"></el-table-column>
-              <el-table-column prop="careStatus" label="关怀状态"></el-table-column>
               <el-table-column label="个人详情">
                 <template slot-scope="scope">
                   <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
