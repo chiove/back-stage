@@ -14,36 +14,36 @@
 				<div class="QR-item-row">
 					<div class="QR-item-title">男生晚归人数</div>
 					<div class="QR-item-left" id="stayOutLate">
-						<div class="QR-item-number" name="sixth"></div>
-						<div class="QR-item-number" name="fifth"></div>
-						<div class="QR-item-number" name="fourth"></div>
-						<div class="QR-item-number" name="third"></div>
-						<div class="QR-item-number" name="second"></div>
             <div class="QR-item-number" name="first"></div>
+            <div class="QR-item-number" name="second"></div>
+            <div class="QR-item-number" name="third"></div>
+            <div class="QR-item-number" name="fourth"></div>
+            <div class="QR-item-number" name="fifth"></div>
+            <div class="QR-item-number" name="sixth"></div>
             <div class="QR-item-person">人</div>
 					</div>
 				</div>
 				<div class="QR-item-row">
 					<div class="QR-item-title">男生未归人数</div>
 					<div class="QR-item-left" id="stayOut">
-            <div class="QR-item-number" name="sixth"></div>
-            <div class="QR-item-number" name="fifth"></div>
-            <div class="QR-item-number" name="fourth"></div>
-            <div class="QR-item-number" name="third"></div>
-            <div class="QR-item-number" name="second"></div>
             <div class="QR-item-number" name="first"></div>
+            <div class="QR-item-number" name="second"></div>
+            <div class="QR-item-number" name="third"></div>
+            <div class="QR-item-number" name="fourth"></div>
+            <div class="QR-item-number" name="fifth"></div>
+            <div class="QR-item-number" name="sixth"></div>
             <div class="QR-item-person">人</div>
 					</div>
 				</div>
 				<div class="QR-item-row">
 					<div class="QR-item-title">男生总人数</div>
 					<div class="QR-item-left" id="total">
-            <div class="QR-item-number" name="sixth"></div>
-            <div class="QR-item-number" name="fifth"></div>
-            <div class="QR-item-number" name="fourth"></div>
-            <div class="QR-item-number" name="third"></div>
-            <div class="QR-item-number" name="second"></div>
             <div class="QR-item-number" name="first"></div>
+            <div class="QR-item-number" name="second"></div>
+            <div class="QR-item-number" name="third"></div>
+            <div class="QR-item-number" name="fourth"></div>
+            <div class="QR-item-number" name="fifth"></div>
+            <div class="QR-item-number" name="sixth"></div>
             <div class="QR-item-person">人</div>
 					</div>
 				</div>
@@ -117,33 +117,33 @@
     getQRcode()
     setInterval(getQRcode,20000)
     function rendeNumber(dom,string) {
-      if(string.length=6){
+      if(string.length===6){
         $('#'+dom+' [name=first]').html(string.substring(0,1))
         $('#'+dom+' [name=second]').html(string.substring(1,2))
         $('#'+dom+' [name=third]').html(string.substring(2,3))
         $('#'+dom+' [name=fourth]').html(string.substring(3,4))
         $('#'+dom+' [name=fifth]').html(string.substring(4,5))
         $('#'+dom+' [name=sixth]').html(string.substring(5,6))
-      }else if(string.length=5){
-        $('#'+dom+' [name=second]').html(string.substring(1,2))
-        $('#'+dom+' [name=third]').html(string.substring(2,3))
-        $('#'+dom+' [name=fourth]').html(string.substring(3,4))
-        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
-        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
-      }else if(string.length=4){
-        $('#'+dom+' [name=third]').html(string.substring(2,3))
-        $('#'+dom+' [name=fourth]').html(string.substring(3,4))
-        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
-        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
-      }else if(string.length=3){
-        $('#'+dom+' [name=fourth]').html(string.substring(3,4))
-        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
-        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
-      }else if(string.length=2){
-        $('#'+dom+' [name=fifth]').html(string.substring(4,5))
-        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
-      }else if(string.length=1){
-        $('#'+dom+' [name=sixth]').html(string.substring(5,6))
+      }else if(string.length===5){
+        $('#'+dom+' [name=second]').html(string.substring(0,1))
+        $('#'+dom+' [name=third]').html(string.substring(1,2))
+        $('#'+dom+' [name=fourth]').html(string.substring(2,3))
+        $('#'+dom+' [name=fifth]').html(string.substring(3,4))
+        $('#'+dom+' [name=sixth]').html(string.substring(4,5))
+      }else if(string.length===4){
+        $('#'+dom+' [name=third]').html(string.substring(0,1))
+        $('#'+dom+' [name=fourth]').html(string.substring(1,2))
+        $('#'+dom+' [name=fifth]').html(string.substring(2,3))
+        $('#'+dom+' [name=sixth]').html(string.substring(3,4))
+      }else if(string.length===3){
+        $('#'+dom+' [name=fourth]').html(string.substring(0,1))
+        $('#'+dom+' [name=fifth]').html(string.substring(1,2))
+        $('#'+dom+' [name=sixth]').html(string.substring(2,3))
+      }else if(string.length===2){
+        $('#'+dom+' [name=fifth]').html(string.substring(0,1))
+        $('#'+dom+' [name=sixth]').html(string.substring(1,2))
+      }else if(string.length===1){
+        $('#'+dom+' [name=sixth]').html(string.substring(0,1))
       }else{
         $('#'+dom+' [name=sixth]').html()
       }
