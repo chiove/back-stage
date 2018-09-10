@@ -60,7 +60,6 @@
           <div class="daily-data-pagination-container">
             <div>
               <el-button type="primary" size="mini" @click="startCareFun">发起关怀</el-button>
-              <el-button type="primary" size="mini" @click="deleteCareFun">撤销关怀</el-button>
             </div>
             <el-pagination
                 background
