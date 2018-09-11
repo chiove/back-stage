@@ -60,6 +60,9 @@
   methods:{
     // 跳回后台login页面
     gotoLogin(){
+      this.$router.push({
+        path: '/login'
+      })
     }
   }
 }

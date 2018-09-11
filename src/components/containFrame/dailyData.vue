@@ -267,6 +267,17 @@
           const _this = this
           this.$axios.get(process.env.API_HOST+'analysis/exeception-clock-by-day',{params:params
           }).then(function (res) {
+            res.data.data.result.forEach(function (item,index) {
+              if(item.clockStatus==1){
+                item.clockStatus = '未打卡'
+              }else  if(item.clockStatus==2){
+                item.clockStatus = '到勤'
+              }else  if(item.clockStatus==3){
+                item.clockStatus = '晚归'
+              }else  if(item.clockStatus==4){
+                item.clockStatus = '未归'
+              }
+            })
               _this.tableData = res.data.data.result
               _this.studentsTotal = res.data.data.totalCount
               _this.pageTotal  =res.data.data.totalCount

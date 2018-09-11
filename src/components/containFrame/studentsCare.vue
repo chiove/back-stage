@@ -113,6 +113,8 @@
         <el-tab-pane label="已处理" name="third">
           <div class="daily-data-table-container">
             <el-table :data="tableData" @sort-change="sortChange1" v-loading="loadingStatus" @selection-change="handleSelectionChange" style="width: 100%">
+              <el-table-column prop="taskCreateTime" label="任务发起时间" width="200"></el-table-column>
+              <el-table-column prop="taskDealTime" label="任务处理时间" width="200"></el-table-column>
               <el-table-column prop="studentName" label="姓名"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
               <el-table-column prop="className" label="班级"></el-table-column>

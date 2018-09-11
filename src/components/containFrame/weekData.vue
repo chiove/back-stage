@@ -206,7 +206,7 @@
           },
           series: [
             {
-              name:'访问来源',
+              name:'考勤状态',
               type:'pie',
               radius: ['50%', '70%'],
               avoidLabelOverlap: false,
@@ -242,13 +242,13 @@
         let dataChartLine = this.$echarts.init(document.getElementById('data-chart-line'),'macarons')
         dataChartLine.setOption({
           title: {
-            text: '折线图堆叠'
+            text: '本周晚归未归人数变化趋势'
           },
           tooltip: {
             trigger: 'axis'
           },
           legend: {
-            data:['邮件营销','联盟广告']
+            data:['晚归','未归']
           },
           grid: {
             left: '3%',
@@ -268,11 +268,11 @@
             {
               name:'晚归',
               type:'line',
-              stack: '总量',
+              stack: '晚归',
               data:stayOutLateArray
             },
             {
-              name:'联盟广告',
+              name:'未归',
               type:'line',
               stack: '未归',
               data:stayOutArray
@@ -417,7 +417,7 @@
     box-shadow:5px 0px 13px rgba(219,230,250,0.45);
   }
   .data-chart-line{
-    width: 5.99rem;
+    width: 9rem;
     height: 2.96rem;
     border-radius:6px;
     box-shadow:5px 0px 13px rgba(219,230,250,0.45);
