@@ -105,8 +105,10 @@
         url:'http://219.153.12.197:31001/big-screen-monitor/qrcode-image',
         success:function (res) {
           if(res){
-            var imge = '<img src="http://219.153.12.197:31001/big-screen-monitor/qrcode-image" alt="">'
-            $('.QR-code-container').html(imge)
+            if(res.code==='000000'){
+              var imge = '<img src="'+res.data+'" alt="">'
+              $('.QR-code-container').html(imge)
+            }
           }
         },
         error:function (error) {
