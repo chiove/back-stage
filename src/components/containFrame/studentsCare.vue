@@ -76,7 +76,7 @@
             <el-table :data="tableData"  @sort-change="sortChange1" v-loading="loadingStatus" style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55"></el-table-column>
               <el-table-column prop="studentName" label="姓名"></el-table-column>
-              <el-table-column prop="taskCreateTime" label="任务发起时间"></el-table-column>
+              <el-table-column prop="taskCreateTime" label="任务发起时间" width="200"></el-table-column>
               <el-table-column prop="studentCode" label="学号"></el-table-column>
               <el-table-column prop="className" label="班级"></el-table-column>
               <el-table-column prop="collegeName" label="学院名称"></el-table-column>

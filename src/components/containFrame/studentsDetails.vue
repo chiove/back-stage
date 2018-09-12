@@ -57,7 +57,7 @@
               {{dataList.totalStayOutLate}}
             </div>
             <div class="students-details-banner-content-data-item-text">
-              累计晚归次数数
+              累计晚归次数
             </div>
           </div>
         </div>
