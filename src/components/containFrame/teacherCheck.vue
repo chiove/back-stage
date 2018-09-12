@@ -171,7 +171,7 @@
           }
         }).then(function (res) {
           if(res){
-            _this.tableDetailsData= res.data.result
+            _this.tableDetailsData= res.data.data.result
           }
         }).catch(function (error) {
           console.log(error)
