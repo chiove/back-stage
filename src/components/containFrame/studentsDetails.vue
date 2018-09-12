@@ -258,7 +258,7 @@
           }
         }).then(function (res) {
           if(res){
-            _this.careListData = res.data.result
+            _this.careListData = res.data.data.result
             _this.carePageNo =  res.data.pageNo
             _this.carePageTotal = res.data.totalCount
           }

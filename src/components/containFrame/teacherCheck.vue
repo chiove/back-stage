@@ -152,6 +152,8 @@
           descOrAsc='desc'
         }
         const params = {
+          pageNo:this.pageNo,
+          pageSize:10,
           orgId:this.$refs.collegeValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           descOrAsc:descOrAsc,
