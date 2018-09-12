@@ -38,7 +38,7 @@
         <div class="students-details-banner-content-data">
           <div class="students-details-banner-content-data-item arrive-clock">
             <div class="students-details-banner-content-data-item-number">
-              {{dataList.totalCared}}
+              {{clockSate.totalCaredCount }}
             </div>
             <div class="students-details-banner-content-data-item-text">
               被关怀次数
@@ -46,7 +46,7 @@
           </div>
           <div class="students-details-banner-content-data-item stay-out-clock">
             <div class="students-details-banner-content-data-item-number">
-              {{dataList.totalStayOut}}
+              {{clockSate.totalStayOut}}
             </div>
             <div class="students-details-banner-content-data-item-text">
               累计未归次数
@@ -54,7 +54,7 @@
           </div>
           <div class="students-details-banner-content-data-item stay-out-late-clock">
             <div class="students-details-banner-content-data-item-number">
-              {{dataList.totalStayOutLate}}
+              {{clockSate.totalStayOutLate}}
             </div>
             <div class="students-details-banner-content-data-item-text">
               累计晚归次数
@@ -170,9 +170,9 @@
   export default {
     name: "studentsDetails",
     mounted:function(){
-      if(this.$route.params){
-        this.dataList = this.$route.params
-        this.studentId = this.$route.params.studentId
+      if(this.$route.query){
+        this.dataList = this.$route.query
+        this.studentId = this.$route.query.studentId
       }
       this.selectDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}`
       if(this.selectDate){
@@ -180,6 +180,7 @@
         this.month = this.selectDate.substring(5,this.selectDate.length)
       }
       this.getAlCareListData()
+      this.getCareNum()
     },
     activated:function(){
       this.selectDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}`
@@ -187,15 +188,21 @@
         this.year = this.selectDate.substring(0,4)
         this.month = this.selectDate.substring(5,this.selectDate.length)
       }
-      if(this.$route.params){
-        this.dataList = this.$route.params
-        this.studentId = this.$route.params.studentId
+      if(this.$route.query){
+        this.dataList = this.$route.query
+        this.studentId = this.$route.query.studentId
       }
       this.getAlCareListData()
+      this.getCareNum()
     },
     data() {
       return {
         dataList:{},/*详情页数据*/
+        clockSate:{
+          totalCaredCount:'0',
+          totalStayOutLate:'0',
+          totalStayOut:'0'
+        },
         studentId:1,/*学生ID*/
         clockListData:[],/*门禁打卡数据*/
         historyClockListData:[],/*历史打卡数据*/
@@ -388,6 +395,18 @@
             position:'bottom-right'
           })
         }
+      },
+      getCareNum(){
+        const _this = this
+        this.$axios.get(process.env.API_HOST+'/student-clock/'+this.studentId+'/stat').then(function (res) {
+          if (res){
+            _this.clockSate.totalCaredCount = res.data.data.totalCaredCount
+            _this.clockSate.totalStayOut = res.data.data.totalStayOut
+            _this.clockSate.totalStayOutLate = res.data.data.totalStayOutLate
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       }
     }
   }

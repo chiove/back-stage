@@ -11,7 +11,7 @@
             :value="item.collegeId">
           </el-option>
         </el-select>
-        <el-input placeholder="请输入学号/姓名搜索" ref="studentNameDom" v-model="teacherNameValue" class="input-with-select" size="mini">
+        <el-input placeholder="请输入工号/姓名搜索" ref="studentNameDom" v-model="teacherNameValue" class="input-with-select" size="mini">
         </el-input>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="searchSubmitFun">搜索</el-button>
       </div>
@@ -68,6 +68,14 @@
             label="打卡时间">
           </el-table-column>
         </el-table>
+        <div class="daily-data-pagination-container">
+          <el-pagination
+            layout="prev, pager, next"
+            @current-change="historyDetails"
+            :current-page.sync="historyCurrentPage"
+            :total="historyCount">
+          </el-pagination>
+        </div>
       </div>
       <span slot="footer" class="dialog-footer">
     <el-button @click="viewDetails = false" size="mini">取 消</el-button>
@@ -106,6 +114,8 @@
         loadingStatus:false,/*加载显示*/
         viewDetails:false,/*查看详情*/
         tableDetailsData:[],/*详情页面table数据*/
+        historyCount:'',
+        historyCurrentPage:1,
       }
     },
     methods:{
@@ -171,6 +181,7 @@
           }
         }).then(function (res) {
           if(res){
+            _this.historyCount = res.data.data.totalCount
             _this.tableDetailsData= res.data.data.result
           }
         }).catch(function (error) {
@@ -191,6 +202,22 @@
           pageSize:10
         }
         this.getTableData(params)
+      },
+      historyDetails(){
+        const _this = this
+        this.$axios.get(process.env.API_HOST+'instructor-clock',{
+          params:{
+            pageNo:this.historyCurrentPage+1,
+            instructorId:row.userId
+          }
+        }).then(function (res) {
+          if(res){
+            _this.historyCount = res.data.data.totalCount
+            _this.tableDetailsData= res.data.data.result
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       }
     }
   }

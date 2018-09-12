@@ -64,14 +64,19 @@
           </el-select>
           <el-select v-model="searchStatus" placeholder="状态不限" @change="searchStatusFun" size="mini" class="tool-bar-search-select">
             <el-option
-              key="1"
-              label="二级学院"
-              value="1">
+              key="2"
+              label="到勤"
+              value="2">
             </el-option>
             <el-option
-              key="2"
-              label="学生处"
-              value="2">
+              key="3"
+              label="晚归"
+              value="3">
+            </el-option>
+            <el-option
+              key="4"
+              label="未归"
+              value="4">
             </el-option>
           </el-select>
           <el-select v-model="instructorListDataValue" ref="instructorValue" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
@@ -258,6 +263,7 @@
             majorId:this.$refs.majorValue.value,
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
+            clockStatus:this.searchStatus
           }
           this.getTableData(params)
         },
@@ -316,7 +322,7 @@
           this.$router.push({
             name:'studentsDetails',
             path: '/index/studentsDetails',
-            params:row
+            query:row
           })
         },
         /*分页查询*/

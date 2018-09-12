@@ -209,7 +209,7 @@
           this.$router.push({
             name:'studentsDetails',
             path: '/index/studentsDetails',
-            params:row
+            query:row
           })
         },
         /*分页查询*/

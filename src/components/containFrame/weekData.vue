@@ -361,13 +361,14 @@
           descOrAsc='desc'
         }
         const params = {
-          weekNumber:this.weekValue,
+          weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
           majorId:this.$refs.majorValue.value,
           instructor:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           descOrAsc:descOrAsc,
-          orderBy:data.prop
+          orderBy:data.prop,
+          pageNo:this.pageNo
         }
         this.getTableData(params)
       },
@@ -376,14 +377,14 @@
         this.$router.push({
           name:'studentsDetails',
           path: '/index/studentsDetails',
-          params:row
+          query:row
         })
       },
       /*分页查询*/
       handleCurrentChange(val) {
         /*表格查询*/
         const params = {
-          weekNumber:this.weekValue,
+          weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
           majorId:this.$refs.majorValue.value,
           instructor:this.$refs.instructorValue.value,
