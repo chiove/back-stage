@@ -398,7 +398,7 @@
               if(this.multipleSelection.length>0){
                 let studentIds = []
                 this.multipleSelection.forEach(function (item,index) {
-                  studentIds.push(item.studentId)
+                  studentIds.push(item.careId)
                 })
                 this.deleteCareData(studentIds,this.userId)
               }else{
@@ -412,7 +412,7 @@
              if(this.willConfirm.length>0){
                let studentIdwill = []
                this.willConfirm.forEach(function (item,index) {
-                 studentIdwill.push(item.studentId)
+                 studentIdwill.push(item.careId)
                })
                this.deleteCareData(studentIdwill,this.userId)
              }else{
