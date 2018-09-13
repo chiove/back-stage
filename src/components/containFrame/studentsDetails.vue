@@ -183,6 +183,7 @@
       this.getCareNum()
     },
     activated:function(){
+      this.activeName='first'
       this.selectDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}`
       if(this.selectDate){
         this.year = this.selectDate.substring(0,4)
