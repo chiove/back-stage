@@ -97,18 +97,23 @@
   require('echarts/theme/macarons');
   export default {
     name: "dailyData",
+    watch:{
+      weekValue:function (val) {
+        /*默认渲染环形图*/
+        this.getRingChartData(val)
+        /*默认渲染折线图*/
+        this.getLineChartData(val)
+        /*表格渲染*/
+        this.getTableData({weekNum:val})
+      }
+    },
     mounted:function(){
+      this.getCurrentWeek()
       this.userId = localStorage.getItem('userId')
       /*获取周数下拉列表*/
       this.getWeekListData()
-      /*默认渲染环形图*/
-      this.getRingChartData(this.weekValue)
-      /*默认渲染折线图*/
-      this.getLineChartData(this.weekValue)
       /*学院查询*/
       this.getCollegeListData()
-      /*表格渲染*/
-      this.getTableData({weekNum:this.weekValue})
     },
     activated:function () {
       this.userId = localStorage.getItem('userId')
@@ -130,7 +135,7 @@
         pageNo:1,/*当前页数*/
         pageTotal:1,/*总页数*/
         tableData: [],/*表格数据*/
-        loadingStatus:false/*加载显示*/
+        loadingStatus:false,/*加载显示*/
       }
     },
     methods: {
@@ -393,6 +398,19 @@
           pageSize:10
         }
         this.getTableData(params)
+      },
+      /*获取当前周*/
+      getCurrentWeek(){
+        const _this = this
+        this.$axios.get(process.env.API_HOST+'select-data/curr-week').then(function (res) {
+          if(res){
+            if(res.data.code==='000000'){
+              _this.weekValue = res.data.data
+            }
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       }
     }
   }
