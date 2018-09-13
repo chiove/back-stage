@@ -398,7 +398,7 @@
       },
       getCareNum(){
         const _this = this
-        this.$axios.get(process.env.API_HOST+'/student-clock/'+this.studentId+'/stat').then(function (res) {
+        this.$axios.get(process.env.API_HOST+'student-clock/'+this.studentId+'/stat').then(function (res) {
           if (res){
             _this.clockSate.totalCaredCount = res.data.data.totalCaredCount
             _this.clockSate.totalStayOut = res.data.data.totalStayOut
