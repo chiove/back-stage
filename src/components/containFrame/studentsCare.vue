@@ -427,7 +427,10 @@
         /*发起学生关怀数据查询*/
         startCareData:function (studentIds,operatorId ) {
           const _this = this
-          this.$axios.post(`${process.env.API_HOST}analysis/start-student-care?studentIds=${studentIds}&operatorId=${operatorId}`).then(function (res) {
+          this.$axios.post(`${process.env.API_HOST}analysis/start-student-care`,{
+            studentIds:studentIds,
+            operatorId:operatorId
+          }).then(function (res) {
             if(res){
               if(res.data.code === '000000'){
                 let params = {
