@@ -150,9 +150,9 @@
       width="30%"
     >
       <div>
-        <el-table :data="historyListData"  v-loading="loadingStatus" style="width: 100%">
-          <el-table-column prop="lastUpdateTime" label="操作时间日期" width="200"></el-table-column>
-          <el-table-column prop="operateAppName" label="操作应用"></el-table-column>
+        <el-table :data="historyDetailsData"  v-loading="loadingStatus" style="width: 100%">
+          <el-table-column prop="operateTime" label="操作时间日期" width="200"></el-table-column>
+          <el-table-column prop="appName" label="操作应用"></el-table-column>
           <el-table-column prop="operatorName" label="操作人"></el-table-column>
           <el-table-column prop="clockStatus" label="考勤状态"></el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
@@ -220,6 +220,7 @@
         showDate:false,
         changeStatus:false,
         historyDetails:false,
+        historyDetailsData:[],
         ruleForm: {
           clockStatus: '',
           remark: '',
@@ -350,8 +351,37 @@
         }
       },
       historyDetailsFun(data){
+        const _this = this
         if(data){
           this.historyDetails = true
+          this.$axios.get(process.env.API_HOST+'student-clock-history',{
+            params:{
+              date:data.clockDate,
+              studentId:this.studentId
+            }
+          }).then(function (res) {
+            if(res){
+              res.data.data.forEach(function (item,index) {
+                switch (item.clockStatus){
+                  case 1:
+                    item.clockStatus = '未打卡'
+                    break;
+                  case 2:
+                    item.clockStatus = '到勤'
+                    break;
+                  case 3:
+                    item.clockStatus = '晚归'
+                    break;
+                  case 4:
+                    item.clockStatus = '未归'
+                    break;
+                }
+              })
+              _this.historyDetailsData = res.data.data
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
         }
       },
       changeStatusFun(data){
