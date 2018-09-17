@@ -10,7 +10,7 @@
           <el-option
             v-for="item in weekListData"
             :key="item.weekNumber"
-            :label="item.weekNumber"
+            :label="item.label"
             :value="item.weekNumber">
           </el-option>
         </el-select>
@@ -113,7 +113,7 @@
       /*获取周数下拉列表*/
       this.getWeekListData()
       /*学院查询*/
-      this.getCollegeListData()
+      this.getCollegeListData(this.userId)
     },
     activated:function () {
       this.userId = localStorage.getItem('userId')
@@ -144,6 +144,9 @@
        const _this = this
         this.$axios.get(process.env.API_HOST+'select-data/week-info/all')
           .then(function (res) {
+            res.data.data.forEach(function (item,index) {
+              item.label = `第${item.weekNumber}周`
+            })
             _this.weekListData = res.data.data
         }).catch(function (error) {
           console.log(error)
@@ -286,9 +289,13 @@
         })
       },
       /*查询学院下拉列表*/
-      getCollegeListData:function(){
+      getCollegeListData:function(userId){
         const _this = this
-        this.$axios.get(process.env.API_HOST+'/select-data/secondary-college/all').then(function (res) {
+        this.$axios.get(process.env.API_HOST+'/select-data/secondary-college/query-by-user',{
+          params:{
+            userId:userId
+          }
+        }).then(function (res) {
           _this.collegeListData = res.data.data
         }).catch(function (error) {
           console.log(error)

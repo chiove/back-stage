@@ -107,7 +107,9 @@
                 var token = res.data.data.token
                 sessionStorage.setItem("token",token)
                 localStorage.setItem("userId",res.data.data.userId)
-                self.$router.push({ path: '/index' });
+                localStorage.setItem('userName',res.data.data.name)
+                localStorage.setItem('orgName',res.data.data.orgName)
+                self.$router.push({ path: '/index/dailyData' });
               }else {
                 console.log('失败')
                 self.logining = false;

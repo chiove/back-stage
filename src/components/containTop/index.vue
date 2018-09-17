@@ -17,9 +17,9 @@
       <img src="../../assets/images/faceaddress.png" v-else>
       <div>
         <p v-if="data.username">{{data.username}}</p>
-        <p v-else>管理员</p>
+        <p v-else>{{userName}}</p>
         <span v-if="data.name">{{data.name}}</span>
-        <span v-else>高级管理员</span>
+        <span v-else>{{orgName}}</span>
       </div>
       <div class="top_right_div_img dropdown">
         <el-dropdown trigger="click" :hide-on-click="false">
@@ -43,6 +43,8 @@
     return {
       visible: false,
       data:'',
+      userName:'',
+      orgName:''
     }
   },
   computed: {
@@ -51,6 +53,10 @@
       // return window.g.url2+'/#/indexs'
     }
   },
+   mounted:function(){
+    this.userName = localStorage.getItem('userName')
+    this.orgName  =localStorage.getItem('orgName')
+   },
   created(){
     /*if(sessionStorage.getItem("content")){
       this.data = JSON.parse(sessionStorage.getItem("content"));

@@ -160,7 +160,7 @@
           nameOrCode: this.$refs.studentNameDom.value,
         }
         /*查询学院下拉列表*/
-        this.getCollegeListData()
+        this.getCollegeListData(this.userId)
         /*默认发起未关怀表格数据*/
         this.getTableData(params)
       },
@@ -188,9 +188,13 @@
       },
       methods: {
         /*查询学院下拉列表*/
-        getCollegeListData: function () {
+        getCollegeListData: function (userId) {
           const _this = this
-          this.$axios.get(process.env.API_HOST+'/select-data/secondary-college/all').then(function (res) {
+          this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user',{
+            params:{
+              userId:userId
+            }
+          }).then(function (res) {
             _this.collegeListData = res.data.data
           }).catch(function (error) {
             console.log(error)
@@ -312,7 +316,7 @@
           this.$router.push({
             name:'studentsDetails',
             path: '/index/studentsDetails',
-            params:row
+            query:row
           })
         },
         /*分页查询*/
@@ -456,22 +460,30 @@
             operatorId:operatorId
           }).then(function (res) {
             if(res){
-              _this.$notify({
-                message: res.data.message,
-                type: 'warning',
-                position:'bottom-right'
-              })
-              let params = {
-                orgId: _this.$refs.collegeValue.value,
-                majorId: _this.$refs.majorValue.value,
-                instructor: _this.$refs.instructorValue.value,
-                nameOrCode: _this.$refs.studentNameDom.value,
-              }
-              if (_this.tabActive === 'first') {
-                _this.getTableData(params)
-              } else if (_this.tabActive === 'second') {
-                params.careStatus = 1
-                _this.getAlCareTableList(params)
+              if(res.data.code='000000'){
+                _this.$notify({
+                  message: '撤销成功',
+                  type: 'success',
+                  position:'bottom-right'
+                })
+                let params = {
+                  orgId: _this.$refs.collegeValue.value,
+                  majorId: _this.$refs.majorValue.value,
+                  instructor: _this.$refs.instructorValue.value,
+                  nameOrCode: _this.$refs.studentNameDom.value,
+                }
+                if (_this.tabActive === 'first') {
+                  _this.getTableData(params)
+                } else if (_this.tabActive === 'second') {
+                  params.careStatus = 1
+                  _this.getAlCareTableList(params)
+                }
+              }else{
+                _this.$notify({
+                  message: res.data.message,
+                  type: 'warning',
+                  position:'bottom-right'
+                })
               }
             }
           }).catch(function (error) {

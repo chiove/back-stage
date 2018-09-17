@@ -208,7 +208,11 @@
         /*查询学院下拉列表*/
         getCollegeListData:function(status){
           const _this = this
-          this.$axios.get(process.env.API_HOST+'/select-data/secondary-college/all').then(function (res) {
+          this.$axios.get(process.env.API_HOST+'select-data/secondary-college/query-by-user',{
+            params:{
+              userId:status
+            }
+          }).then(function (res) {
             _this.collegeListData = res.data.data
           }).catch(function (error) {
             console.log(error)
