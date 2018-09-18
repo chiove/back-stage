@@ -12,14 +12,14 @@
               :value="item.collegeId">
             </el-option>
           </el-select>
-          <el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
+          <!--<el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
             <el-option
               v-for="item in majorListData"
               :key="item.majorId"
               :label="item.majorName"
               :value="item.majorId">
             </el-option>
-          </el-select>
+          </el-select>-->
           <el-select v-model="instructorListDataValue" ref="instructorValue" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
             <el-option
               v-for="item in instructorListData"
@@ -155,12 +155,14 @@
         this.userId = localStorage.getItem('userId')
         let params = {
           orgId: this.$refs.collegeValue.value,
-          majorId: this.$refs.majorValue.value,
+          /*majorId: this.$refs.majorValue.value,*/
           instructor: this.$refs.instructorValue.value,
           nameOrCode: this.$refs.studentNameDom.value,
         }
         /*查询学院下拉列表*/
         this.getCollegeListData(this.userId)
+        /*辅导员下拉列表*/
+        this.getInstuctorList()
         /*默认发起未关怀表格数据*/
         this.getTableData(params)
       },
@@ -237,7 +239,7 @@
           /*表格查询*/
           let params = {
             orgId: this.$refs.collegeValue.value,
-            majorId: this.$refs.majorValue.value,
+            /*majorId: this.$refs.majorValue.value,*/
             instructor: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
           }
@@ -295,7 +297,7 @@
           }
           let params = {
             orgId: this.$refs.collegeValue.value,
-            majorId: this.$refs.majorValue.value,
+            /*majorId: this.$refs.majorValue.value,*/
             instructor: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
             descOrAsc: descOrAsc,
@@ -323,7 +325,7 @@
         handleCurrentChange(val) {
           let params = {
             orgId: this.$refs.collegeValue.value,
-            majorId: this.$refs.majorValue.value,
+           /* majorId: this.$refs.majorValue.value,*/
             instructor: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
             pageNo: val,
@@ -353,7 +355,7 @@
             this.tabActive = 'first'
             const params = {
               orgId: this.$refs.collegeValue.value,
-              majorId: this.$refs.majorValue.value,
+              /*majorId: this.$refs.majorValue.value,*/
               instructor: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
@@ -363,7 +365,7 @@
             const params = {
               careStatus: 1,
               orgId: this.$refs.collegeValue.value,
-              majorId: this.$refs.majorValue.value,
+              /*majorId: this.$refs.majorValue.value,*/
               instructor: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
@@ -373,7 +375,7 @@
             const params = {
               careStatus: 2,
               orgId: this.$refs.collegeValue.value,
-              majorId: this.$refs.majorValue.value,
+              /*majorId: this.$refs.majorValue.value,*/
               instructor: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
@@ -439,7 +441,7 @@
               if(res.data.code === '000000'){
                 let params = {
                   orgId: _this.$refs.collegeValue.value,
-                  majorId: _this.$refs.majorValue.value,
+                  /*majorId: _this.$refs.majorValue.value,*/
                   instructor: _this.$refs.instructorValue.value,
                   nameOrCode: _this.$refs.studentNameDom.value,
                 }
@@ -468,7 +470,7 @@
                 })
                 let params = {
                   orgId: _this.$refs.collegeValue.value,
-                  majorId: _this.$refs.majorValue.value,
+                  /*majorId: _this.$refs.majorValue.value,*/
                   instructor: _this.$refs.instructorValue.value,
                   nameOrCode: _this.$refs.studentNameDom.value,
                 }
@@ -485,6 +487,17 @@
                   position:'bottom-right'
                 })
               }
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
+        },
+        /*获取辅导员列表*/
+        getInstuctorList(){
+          const _this = this
+          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all').then(function (res) {
+            if(res){
+              _this.instructorListData = res.data.data
             }
           }).catch(function (error) {
             console.log(error)

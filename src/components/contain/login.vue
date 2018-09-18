@@ -27,10 +27,10 @@
           <el-button type="primary" style="width:100%;" :class="{'bgcolor' :ruleForm.account && ruleForm.checkPass}" @click.native.prevent="handleSubmit2" :loading="logining" >登录</el-button>
           <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
         </el-form-item>
-        <div>
+        <!--<div>
           <input type="checkbox" id="a" class="checkbox" v-model="checked">
           <label for="a" class="checkbox"><span style="margin-left: 25px;white-space: nowrap;">记住密码</span></label>
-        </div>
+        </div>-->
         <div class="main_login">
           <!--  <button>忘记密码</button>
            |
@@ -87,6 +87,7 @@
             self.logining = true;
             self.getNowFormatDate();
             axios.post(process.env.API_HOST+'login',{
+              sys:1,
               username:self.ruleForm.account,
               password:self.ruleForm.checkPass
             }).then(res=>{

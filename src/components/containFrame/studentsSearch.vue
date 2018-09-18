@@ -11,14 +11,14 @@
             :value="item.collegeId">
           </el-option>
         </el-select>
-        <el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
+        <!--<el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
           <el-option
             v-for="item in majorListData"
             :key="item.majorId"
             :label="item.majorName"
             :value="item.majorId">
           </el-option>
-        </el-select>
+        </el-select>-->
         <el-select v-model="buildListDataValue" ref="buildDom" placeholder="全部宿舍"  size="mini" class="tool-bar-search-select">
           <el-option
             v-for="item in buildListData"
@@ -81,6 +81,8 @@
         this.userId = localStorage.getItem('userId')
         /*查询学院下拉列表*/
         this.getCollegeListData(this.userId)
+        /*辅导员下拉列表*/
+        this.getInstuctorList()
         /*查询宿舍下拉列表*/
         this.getBuildListData()
         /*查询表格数据*/
@@ -167,7 +169,7 @@
           const params = {
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            majorId:this.$refs.majorValue.value,
+            /*majorId:this.$refs.majorValue.value,*/
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
           }
@@ -200,7 +202,7 @@
           const params = {
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            majorId:this.$refs.majorValue.value,
+            /*majorId:this.$refs.majorValue.value,*/
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             descOrAsc:descOrAsc,
@@ -222,13 +224,24 @@
           const params = {
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            majorId:this.$refs.majorValue.value,
+            /*majorId:this.$refs.majorValue.value,*/
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             pageNo:val,
             pageSize:10
           }
           this.getTableData(params)
+        },
+        /*获取辅导员列表*/
+        getInstuctorList(){
+          const _this = this
+          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all').then(function (res) {
+            if(res){
+              _this.instructorListData = res.data.data
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
         }
       }
     }

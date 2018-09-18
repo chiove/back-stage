@@ -39,14 +39,14 @@
             :value="item.collegeId">
           </el-option>
         </el-select>
-        <el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
+        <!--<el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
           <el-option
             v-for="item in majorListData"
             :key="item.majorId"
             :label="item.majorName"
             :value="item.majorId">
           </el-option>
-        </el-select>
+        </el-select>-->
         <el-select v-model="instructorListDataValue" ref="instructorValue" placeholder="全部辅导员" size="mini" class="tool-bar-search-select">
           <el-option
             v-for="item in instructorListData"
@@ -114,6 +114,8 @@
       this.getWeekListData()
       /*学院查询*/
       this.getCollegeListData(this.userId)
+      /*辅导员下拉列表*/
+      this.getInstuctorList()
     },
     activated:function () {
       this.userId = localStorage.getItem('userId')
@@ -341,7 +343,7 @@
         const params = {
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
-          majorId:this.$refs.majorValue.value,
+          /*majorId:this.$refs.majorValue.value,*/
           instructor:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
         }
@@ -375,7 +377,7 @@
         const params = {
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
-          majorId:this.$refs.majorValue.value,
+          /*majorId:this.$refs.majorValue.value,*/
           instructor:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           descOrAsc:descOrAsc,
@@ -398,7 +400,7 @@
         const params = {
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
-          majorId:this.$refs.majorValue.value,
+         /* majorId:this.$refs.majorValue.value,*/
           instructor:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           pageNo:val,
@@ -414,6 +416,17 @@
             if(res.data.code==='000000'){
               _this.weekValue = res.data.data
             }
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      /*获取辅导员列表*/
+      getInstuctorList(){
+        const _this = this
+        this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all').then(function (res) {
+          if(res){
+            _this.instructorListData = res.data.data
           }
         }).catch(function (error) {
           console.log(error)

@@ -54,14 +54,14 @@
               :value="item.collegeId">
             </el-option>
           </el-select>
-          <el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
+          <!--<el-select v-model="majorListDataValue" @change="majorSelectFun" ref="majorValue" placeholder="全部专业" size="mini" class="tool-bar-search-select">
             <el-option
               v-for="item in majorListData"
               :key="item.majorId"
               :label="item.majorName"
               :value="item.majorId">
             </el-option>
-          </el-select>
+          </el-select>-->
           <el-select v-model="searchStatus" placeholder="状态不限" @change="searchStatusFun" size="mini" class="tool-bar-search-select">
             <el-option
               key="2"
@@ -137,6 +137,8 @@
         this.searchDateValue = yesterday;
         /*查询学院下拉列表*/
         this.getCollegeListData(this.userId)
+        /*查询辅导员*/
+        this.getInstuctorList()
         /*学院考勤人数*/
         this.checkTotalFun(this.searchDateValue)
         /*表格查询*/
@@ -153,7 +155,7 @@
             /*设置时间选择范围*/
             pickerOptions0: {
               disabledDate(time) {
-                return time.getTime() >= Date.now() - 8.64e5
+                return time.getTime() > Date.now()- 24 * 3600 * 1000;
               }
             },
             studentsTotal:0,/*异常总人数*/
@@ -264,7 +266,7 @@
           const params = {
             date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
-            majorId:this.$refs.majorValue.value,
+            /*majorId:this.$refs.majorValue.value,*/
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             clockStatus:this.searchStatus
@@ -313,7 +315,7 @@
           const params = {
             date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
-            majorId:this.$refs.majorValue.value,
+            /*majorId:this.$refs.majorValue.value,*/
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             descOrAsc:descOrAsc,
@@ -338,13 +340,24 @@
           const params = {
             date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
-            majorId:this.$refs.majorValue.value,
+            /*majorId:this.$refs.majorValue.value,*/
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             pageNo:val,
             pageSize:10
           }
           this.getTableData(params)
+        },
+        /*获取辅导员列表*/
+        getInstuctorList(){
+          const _this = this
+          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all').then(function (res) {
+            if(res){
+              _this.instructorListData = res.data.data
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
         }
       }
     }

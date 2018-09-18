@@ -67,7 +67,7 @@ Vue.use(Router)
     },
   ]
 })
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
   let token = sessionStorage.getItem('token')
   if (to.matched.some(record => record.meta.requiresAuth) && (!token || token === null)) {
     next({
@@ -77,5 +77,5 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-})
+})*/
 export default router
