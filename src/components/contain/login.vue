@@ -112,9 +112,8 @@
                 localStorage.setItem('orgName',res.data.data.orgName)
                 self.$router.push({ path: '/index/dailyData' });
               }else {
-                console.log('失败')
                 self.logining = false;
-                self.$message.error( '登录失败!');
+                self.$message.error(res.data.message);
               }
             })
           } else {
