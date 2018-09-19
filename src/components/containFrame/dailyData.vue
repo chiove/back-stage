@@ -64,11 +64,6 @@
           </el-select>-->
           <el-select v-model="searchStatus" placeholder="状态不限" @change="searchStatusFun" size="mini" class="tool-bar-search-select">
             <el-option
-              key="2"
-              label="到勤"
-              value="2">
-            </el-option>
-            <el-option
               key="3"
               label="晚归"
               value="3">
@@ -188,7 +183,7 @@
           this.checkTotalFun(dateValue)
           /*表格查询*/
           const params = {
-            date:dateValue,
+            date:dateValue
           }
           this.getTableData(params)
         },

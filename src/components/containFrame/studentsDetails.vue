@@ -80,9 +80,9 @@
         </div>
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="关怀反馈数据" name="first">
-            <el-table :data="careListData"  v-loading="loadingStatus" style="width: 100%">
-              <el-table-column prop="taskDate" label="任务时间"></el-table-column>
-              <el-table-column prop="dealDate" label="处理时间"></el-table-column>
+            <el-table :data="careListData"  v-loading="loadingStatus" style="width: 100%;" >
+              <el-table-column prop="taskDate" label="任务时间" width="200"></el-table-column>
+              <el-table-column prop="dealDate" label="处理时间" width="200"></el-table-column>
               <el-table-column prop="remark" label="反馈结果"></el-table-column>
             </el-table>
             <div class="daily-data-pagination-container">
@@ -155,7 +155,7 @@
           <el-table-column prop="appName" label="操作应用"></el-table-column>
           <el-table-column prop="operatorName" label="操作人"></el-table-column>
           <el-table-column prop="clockStatus" label="考勤状态"></el-table-column>
-          <el-table-column prop="remark" label="备注"></el-table-column>
+          <el-table-column prop="remark" label="备注" width="500"></el-table-column>
         </el-table>
       </div>
       <span slot="footer" class="dialog-footer">
