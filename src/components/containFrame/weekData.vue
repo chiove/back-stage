@@ -344,7 +344,7 @@
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
           /*majorId:this.$refs.majorValue.value,*/
-          instructor:this.$refs.instructorValue.value,
+          instructorId:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
         }
         this.getTableData(params)
@@ -378,7 +378,7 @@
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
           /*majorId:this.$refs.majorValue.value,*/
-          instructor:this.$refs.instructorValue.value,
+          instructorId:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           descOrAsc:descOrAsc,
           orderBy:data.prop,
@@ -401,7 +401,7 @@
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
          /* majorId:this.$refs.majorValue.value,*/
-          instructor:this.$refs.instructorValue.value,
+          instructorId:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           pageNo:val,
           pageSize:10

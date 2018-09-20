@@ -24,8 +24,8 @@
         <el-table-column prop="responsibleStudent" label="负责学生数" sortable="custom"></el-table-column>
         <el-table-column prop="clockCount" label="打卡次数" sortable="custom"></el-table-column>
         <el-table-column prop="dealCareCount" label="处理关怀次数" sortable="custom"></el-table-column>
-        <el-table-column prop="totalLayOutCount" label="累计未归学生" sortable="custom"></el-table-column>
-        <el-table-column prop="totalLayOutLateCount" label="累计晚归学生" sortable="custom"></el-table-column>
+        <!--<el-table-column prop="totalLayOutCount" label="累计未归学生" sortable="custom"></el-table-column>
+        <el-table-column prop="totalLayOutLateCount" label="累计晚归学生" sortable="custom"></el-table-column>-->
         <el-table-column label="打卡记录">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>

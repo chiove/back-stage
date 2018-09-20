@@ -156,7 +156,7 @@
         let params = {
           orgId: this.$refs.collegeValue.value,
           /*majorId: this.$refs.majorValue.value,*/
-          instructor: this.$refs.instructorValue.value,
+          instructorId: this.$refs.instructorValue.value,
           nameOrCode: this.$refs.studentNameDom.value,
         }
         /*查询学院下拉列表*/
@@ -240,7 +240,7 @@
           let params = {
             orgId: this.$refs.collegeValue.value,
             /*majorId: this.$refs.majorValue.value,*/
-            instructor: this.$refs.instructorValue.value,
+            instructorId: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
           }
           if (this.tabActive === 'first') {
@@ -298,7 +298,7 @@
           let params = {
             orgId: this.$refs.collegeValue.value,
             /*majorId: this.$refs.majorValue.value,*/
-            instructor: this.$refs.instructorValue.value,
+            instructorId: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
             descOrAsc: descOrAsc,
             orderBy: data.prop
@@ -326,7 +326,7 @@
           let params = {
             orgId: this.$refs.collegeValue.value,
            /* majorId: this.$refs.majorValue.value,*/
-            instructor: this.$refs.instructorValue.value,
+            instructorId: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
             pageNo: val,
             pageSize: 10
@@ -356,7 +356,7 @@
             const params = {
               orgId: this.$refs.collegeValue.value,
               /*majorId: this.$refs.majorValue.value,*/
-              instructor: this.$refs.instructorValue.value,
+              instructorId: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
             this.getTableData(params)
@@ -366,7 +366,7 @@
               careStatus: 1,
               orgId: this.$refs.collegeValue.value,
               /*majorId: this.$refs.majorValue.value,*/
-              instructor: this.$refs.instructorValue.value,
+              instructorId: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
             this.getAlCareTableList(params)
@@ -376,7 +376,7 @@
               careStatus: 2,
               orgId: this.$refs.collegeValue.value,
               /*majorId: this.$refs.majorValue.value,*/
-              instructor: this.$refs.instructorValue.value,
+              instructorId: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
             this.getAlCareTableList(params)
@@ -442,7 +442,7 @@
                 let params = {
                   orgId: _this.$refs.collegeValue.value,
                   /*majorId: _this.$refs.majorValue.value,*/
-                  instructor: _this.$refs.instructorValue.value,
+                  instructorId: _this.$refs.instructorValue.value,
                   nameOrCode: _this.$refs.studentNameDom.value,
                 }
                 if (_this.tabActive === 'first') {
@@ -471,7 +471,7 @@
                 let params = {
                   orgId: _this.$refs.collegeValue.value,
                   /*majorId: _this.$refs.majorValue.value,*/
-                  instructor: _this.$refs.instructorValue.value,
+                  instructorId: _this.$refs.instructorValue.value,
                   nameOrCode: _this.$refs.studentNameDom.value,
                 }
                 if (_this.tabActive === 'first') {
