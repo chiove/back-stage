@@ -154,8 +154,8 @@
       mounted: function () {
         this.userId = localStorage.getItem('userId')
         let params = {
+          userId:this.userId,
           orgId: this.$refs.collegeValue.value,
-          /*majorId: this.$refs.majorValue.value,*/
           instructorId: this.$refs.instructorValue.value,
           nameOrCode: this.$refs.studentNameDom.value,
         }
@@ -212,7 +212,10 @@
           })
           /*查询专业下拉列表*/
           this.$axios.get(process.env.API_HOST+'select-data/major-info/all', {
-            params: {orgId: data}
+            params: {
+              orgId: data,
+              userId:this.userId,
+            }
           }).then(function (res) {
             _this.majorListData = res.data.data
           }).catch(function (error) {
@@ -223,6 +226,7 @@
         majorSelectFun: function (data) {
           const _this = this
           const params = {
+            userId:this.userId,
             majorId: this.$refs.collegeValue.value,
             orgId: data
           }
@@ -238,8 +242,8 @@
         searchSubmitFun: function () {
           /*表格查询*/
           let params = {
+            userId:this.userId,
             orgId: this.$refs.collegeValue.value,
-            /*majorId: this.$refs.majorValue.value,*/
             instructorId: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
           }
@@ -296,8 +300,8 @@
             descOrAsc = 'desc'
           }
           let params = {
+            userId:this.userId,
             orgId: this.$refs.collegeValue.value,
-            /*majorId: this.$refs.majorValue.value,*/
             instructorId: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
             descOrAsc: descOrAsc,
@@ -324,8 +328,8 @@
         /*分页查询*/
         handleCurrentChange(val) {
           let params = {
+            userId:this.userId,
             orgId: this.$refs.collegeValue.value,
-           /* majorId: this.$refs.majorValue.value,*/
             instructorId: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
             pageNo: val,
@@ -354,8 +358,8 @@
           if (data.name === 'first') {
             this.tabActive = 'first'
             const params = {
+              userId:this.userId,
               orgId: this.$refs.collegeValue.value,
-              /*majorId: this.$refs.majorValue.value,*/
               instructorId: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
@@ -363,9 +367,9 @@
           } else if (data.name === 'second') {
             this.tabActive = 'second'
             const params = {
+              userId:this.userId,
               careStatus: 1,
               orgId: this.$refs.collegeValue.value,
-              /*majorId: this.$refs.majorValue.value,*/
               instructorId: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
@@ -373,9 +377,9 @@
           } else {
             this.tabActive = 'third'
             const params = {
+              userId:this.userId,
               careStatus: 2,
               orgId: this.$refs.collegeValue.value,
-              /*majorId: this.$refs.majorValue.value,*/
               instructorId: this.$refs.instructorValue.value,
               nameOrCode: this.$refs.studentNameDom.value,
             }
@@ -434,6 +438,7 @@
         startCareData:function (studentIds,operatorId ) {
           const _this = this
           this.$axios.post(`${process.env.API_HOST}analysis/start-student-care`,{
+            userId:this.userId,
             studentIds:studentIds,
             operatorId:operatorId
           }).then(function (res) {
@@ -441,7 +446,7 @@
               if(res.data.code === '000000'){
                 let params = {
                   orgId: _this.$refs.collegeValue.value,
-                  /*majorId: _this.$refs.majorValue.value,*/
+                  userId:_this.userId,
                   instructorId: _this.$refs.instructorValue.value,
                   nameOrCode: _this.$refs.studentNameDom.value,
                 }
@@ -458,6 +463,7 @@
         deleteCareData:function (careIds,operatorId) {
           const _this = this
           this.$axios.put(process.env.API_HOST+'analysis/delete-student-care',{
+            userId:this.userId,
             careIds:careIds,
             operatorId:operatorId
           }).then(function (res) {
@@ -470,7 +476,7 @@
                 })
                 let params = {
                   orgId: _this.$refs.collegeValue.value,
-                  /*majorId: _this.$refs.majorValue.value,*/
+                  userId:_this.userId,
                   instructorId: _this.$refs.instructorValue.value,
                   nameOrCode: _this.$refs.studentNameDom.value,
                 }
@@ -495,7 +501,11 @@
         /*获取辅导员列表*/
         getInstuctorList(){
           const _this = this
-          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all').then(function (res) {
+          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all',{
+            params:{
+              userId:this.userId
+            }
+          }).then(function (res) {
             if(res){
               _this.instructorListData = res.data.data
             }

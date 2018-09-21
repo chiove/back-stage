@@ -138,6 +138,7 @@
         this.checkTotalFun(this.searchDateValue)
         /*表格查询*/
         const params = {
+          userId:this.userId,
           date:this.searchDateValue
         }
         this.getTableData(params)
@@ -183,6 +184,7 @@
           this.checkTotalFun(dateValue)
           /*表格查询*/
           const params = {
+            userId:this.userId,
             date:dateValue
           }
           this.getTableData(params)
@@ -192,6 +194,7 @@
           const _this = this
           this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-day',{
             params:{
+              userId:this.userId,
               date:date,
               orgId:orgId
             }
@@ -224,29 +227,21 @@
               _this.checkTotalFun(_this.$refs.dateValue.value,item.collegeId)
             }
           })
-          /*查询专业下拉列表*/
-          this.$axios.get(process.env.API_HOST+'select-data/major-info/all',{params:{orgId:data}
-          }).then(function (res) {
-            _this.majorListData = res.data.data
-            }).catch(function (error) {
-            console.log(error)
-          })
         },
         /*状态选择后触发事件*/
         searchStatusFun:function(data){
           this.searchStatus = data
-          this.getCollegeListData(data);
         },
         /*专业下拉选择后触发事件*/
         majorSelectFun:function(data){
           const _this = this
           const params = {
             majorId:this.$refs.collegeValue.value,
+            userId:this.userId,
             orgId:data
           }
           this.$axios.get(process.env.API_HOST+'select-data/instructor-info/all',{params:params
           }).then(function (res) {
-            console.log(res)
             _this.instructorListData = res.data.data
           }).catch(function (error) {
             console.log(error)
@@ -259,9 +254,9 @@
             this.dateValue = this.searchDateValue
           }
           const params = {
+            userId:this.userId,
             date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
-            /*majorId:this.$refs.majorValue.value,*/
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             clockStatus:this.searchStatus
@@ -308,6 +303,7 @@
             this.dateValue = this.searchDateValue
           }
           const params = {
+            userId:this.userId,
             date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
             /*majorId:this.$refs.majorValue.value,*/
@@ -333,6 +329,7 @@
             this.dateValue = this.searchDateValue
           }
           const params = {
+            userId:this.userId,
             date:this.dateValue,
             orgId:this.$refs.collegeValue.value,
             /*majorId:this.$refs.majorValue.value,*/
@@ -346,7 +343,11 @@
         /*获取辅导员列表*/
         getInstuctorList(){
           const _this = this
-          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all').then(function (res) {
+          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all',{
+            params:{
+              userId:this.userId,
+            }
+          }).then(function (res) {
             if(res){
               _this.instructorListData = res.data.data
             }

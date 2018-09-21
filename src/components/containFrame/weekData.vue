@@ -104,11 +104,13 @@
         /*默认渲染折线图*/
         this.getLineChartData(val)
         /*表格渲染*/
-        this.getTableData({weekNum:val})
+        this.getTableData({
+          userId:this.userId,
+          weekNum:val
+        })
       }
     },
     mounted:function(){
-      this.getCurrentWeek()
       this.userId = localStorage.getItem('userId')
       /*获取周数下拉列表*/
       this.getWeekListData()
@@ -116,6 +118,7 @@
       this.getCollegeListData(this.userId)
       /*辅导员下拉列表*/
       this.getInstuctorList()
+      this.getCurrentWeek()
     },
     activated:function () {
       this.userId = localStorage.getItem('userId')
@@ -144,7 +147,11 @@
       /*获取周数下拉列表*/
       getWeekListData:function(){
        const _this = this
-        this.$axios.get(process.env.API_HOST+'select-data/week-info/all')
+        this.$axios.get(process.env.API_HOST+'select-data/week-info/all',{
+          params:{
+            userId:this.userId
+          }
+        })
           .then(function (res) {
             res.data.data.forEach(function (item,index) {
               item.label = `第${item.weekNumber}周`
@@ -162,13 +169,17 @@
         /*默认渲染折线图*/
         this.getLineChartData(data)
         /*表格渲染*/
-        this.getTableData({weekNum:data})
+        this.getTableData({
+          userId:this.userId,
+          weekNum:data
+        })
       },
       /*查询环形图数据*/
       getRingChartData:function(weekNumber,orgId){
         const _this = this
         this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-week',{
           params:{
+            userId:this.userId,
             weekNumber :weekNumber,
             orgId:orgId
           }
@@ -182,7 +193,12 @@
       /*查询折线图数据*/
       getLineChartData:function(weekNumber,orgId){
         const _this = this
-        this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-day-of-week',{params:{weekNum:weekNumber,orgId:orgId}
+        this.$axios.get(process.env.API_HOST+'analysis/exeception-stat-by-day-of-week',{
+          params:{
+            userId:this.userId,
+            weekNum:weekNumber,
+            orgId:orgId
+          }
         }).then(function (res) {
           if(res){
             if(res.data.data){
@@ -307,7 +323,11 @@
       collegeSelectFun:function(data){
         const _this = this
         /*查询专业下拉列表*/
-        this.$axios.get(process.env.API_HOST+'select-data/major-info/all',{params:{orgId:data}
+        this.$axios.get(process.env.API_HOST+'select-data/major-info/all',{
+          params:{
+            userId:this.userId,
+            orgId:data
+          }
         }).then(function (res) {
           _this.majorListData = res.data.data
         }).catch(function (error) {
@@ -327,6 +347,7 @@
       majorSelectFun:function(data){
         const _this = this
         const params = {
+          userId:this.userId,
           majorId:this.$refs.collegeValue.value,
           orgId:data
         }
@@ -341,9 +362,9 @@
       searchSubmitFun:function(){
         /*表格查询*/
         const params = {
+          userId:this.userId,
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
-          /*majorId:this.$refs.majorValue.value,*/
           instructorId:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
         }
@@ -375,9 +396,9 @@
           descOrAsc='desc'
         }
         const params = {
+          userId:this.userId,
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
-          /*majorId:this.$refs.majorValue.value,*/
           instructorId:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           descOrAsc:descOrAsc,
@@ -398,9 +419,9 @@
       handleCurrentChange(val) {
         /*表格查询*/
         const params = {
+          userId:this.userId,
           weekNum:this.weekValue,
           orgId:this.$refs.collegeValue.value,
-         /* majorId:this.$refs.majorValue.value,*/
           instructorId:this.$refs.instructorValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           pageNo:val,
@@ -411,7 +432,11 @@
       /*获取当前周*/
       getCurrentWeek(){
         const _this = this
-        this.$axios.get(process.env.API_HOST+'select-data/curr-week').then(function (res) {
+        this.$axios.get(process.env.API_HOST+'select-data/curr-week',{
+          params:{
+            userId:this.userId
+          }
+        }).then(function (res) {
           if(res){
             if(res.data.code==='000000'){
               _this.weekValue = res.data.data
@@ -424,7 +449,11 @@
       /*获取辅导员列表*/
       getInstuctorList(){
         const _this = this
-        this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all').then(function (res) {
+        this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all',{
+          params:{
+            userId:this.userId
+          }
+        }).then(function (res) {
           if(res){
             _this.instructorListData = res.data.data
           }

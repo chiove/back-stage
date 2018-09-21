@@ -66,7 +66,7 @@
   $(function () {
     /*获取文本滚动内容*/
     $.ajax({
-      url:'http://219.153.12.197:31001/big-screen-monitor/copy-writing',
+      url:'http://172.99.247.54:9999/big-screen-monitor/copy-writing',
       success:function (res) {
         if(res){
           $(".QR-footer div").html(res.data)
@@ -78,7 +78,7 @@
     })
     /*获取考勤人数*/
     $.ajax({
-      url:'http://219.153.12.197:31001/big-screen-monitor/data-stat',
+      url:'http://172.99.247.54:9999/big-screen-monitor/data-stat',
       success:function (res) {
         if(res){
           if(res.data.stayoutFemaleNum){
@@ -102,7 +102,7 @@
     function getQRcode(){
       /*获取二维码*/
       $.ajax({
-        url:'http://219.153.12.197:31001/big-screen-monitor/qrcode-image',
+        url:'http://172.99.247.54:9999/big-screen-monitor/qrcode-image',
         success:function (res) {
           if(res){
             if(res.code==='000000'){

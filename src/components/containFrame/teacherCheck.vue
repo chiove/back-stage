@@ -94,6 +94,7 @@
       this.getCollegeListData(this.userId)
       /*查询表格数据*/
       const params = {
+        userId:this.userId,
         orgId:this.$refs.collegeValue.value,
         nameOrCode:this.$refs.studentNameDom.value,
       }
@@ -136,6 +137,7 @@
       searchSubmitFun:function(){
         /*表格查询*/
         const params = {
+          userId:this.userId,
           orgId:this.$refs.collegeValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
         }
@@ -166,6 +168,7 @@
           descOrAsc='desc'
         }
         const params = {
+          userId:this.userId,
           pageNo:this.pageNo,
           pageSize:10,
           orgId:this.$refs.collegeValue.value,
@@ -200,6 +203,7 @@
       handleCurrentChange(val) {
         /*表格查询*/
         const params = {
+          userId:this.userId,
           orgId:this.$refs.collegeValue.value,
           nameOrCode:this.$refs.studentNameDom.value,
           pageNo:val,
@@ -211,6 +215,7 @@
         const _this = this
         this.$axios.get(process.env.API_HOST+'instructor-clock',{
           params:{
+            userId:this.userId,
             pageNo:this.historyCurrentPage+1,
             instructorId:row.userId
           }

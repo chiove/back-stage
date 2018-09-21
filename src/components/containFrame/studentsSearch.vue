@@ -86,7 +86,10 @@
         /*查询宿舍下拉列表*/
         this.getBuildListData()
         /*查询表格数据*/
-        this.getTableData()
+        const params =  {
+          userId:this.userId
+        }
+        this.getTableData(params)
       },
       activated:function () {
         this.userId = localStorage.getItem('userId')
@@ -132,7 +135,11 @@
             }
           })
           /*查询专业下拉列表*/
-          this.$axios.get(process.env.API_HOST+'select-data/major-info/all',{params:{orgId:data}
+          this.$axios.get(process.env.API_HOST+'select-data/major-info/all',{
+            params:{
+              userId:this.userId,
+              orgId:data
+            }
           }).then(function (res) {
             _this.majorListData = res.data.data
           }).catch(function (error) {
@@ -143,6 +150,7 @@
         majorSelectFun:function(data){
           const _this = this
           const params = {
+            userId:this.userId,
             majorId:this.$refs.collegeValue.value,
             orgId:data
           }
@@ -157,7 +165,11 @@
         /*查询宿舍下拉列表*/
         getBuildListData:function(){
           const _this = this
-          this.$axios.get(process.env.API_HOST+'/select-data/dormitory-building/all').then(function (res) {
+          this.$axios.get(process.env.API_HOST+'select-data/dormitory-building/all',{
+            params:{
+              userId:this.userId
+            }
+          }).then(function (res) {
             _this.buildListData = res.data.data
           }).catch(function (error) {
             console.log(error)
@@ -167,9 +179,9 @@
         searchSubmitFun:function(){
           /*表格查询*/
           const params = {
+            userId:this.userId,
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            /*majorId:this.$refs.majorValue.value,*/
             instructorId:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
           }
@@ -200,9 +212,9 @@
             descOrAsc='desc'
           }
           const params = {
+            userId:this.userId,
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            /*majorId:this.$refs.majorValue.value,*/
             instructorId:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             descOrAsc:descOrAsc,
@@ -222,9 +234,9 @@
         handleCurrentChange(val) {
           /*表格查询*/
           const params = {
+            userId:this.userId,
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            /*majorId:this.$refs.majorValue.value,*/
             instructorId:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             pageNo:val,
@@ -235,7 +247,11 @@
         /*获取辅导员列表*/
         getInstuctorList(){
           const _this = this
-          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all').then(function (res) {
+          this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all',{
+            params:{
+              userId:this.userId
+            }
+          }).then(function (res) {
             if(res){
               _this.instructorListData = res.data.data
             }
