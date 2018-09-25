@@ -6,8 +6,9 @@
             <span class="tool-bar-search-babel">
               范围选择
             </span>
-            <el-date-picker ref="dateValue"
+            <el-date-picker
               v-model="searchDateValue"
+              value-format="yyyy-MM-dd"
               type="date"
               size="mini"
               placeholder="选择日期"
@@ -178,14 +179,14 @@
       methods: {
         /*日期选择后触发事件*/
         dateChangeFun:function(data){
-          const dateValue = `${data.getFullYear()}-${data.getMonth()+1}-${data.getDate()}`
-          this.dateValue = dateValue
+          // const dateValue = `${data.getFullYear()}-${data.getMonth()+1}-${data.getDate()}`
+          this.dateValue = data
           /*学院考勤人数*/
-          this.checkTotalFun(dateValue)
+          this.checkTotalFun(data)
           /*表格查询*/
           const params = {
             userId:this.userId,
-            date:dateValue
+            date:data
           }
           this.getTableData(params)
         },
@@ -224,7 +225,7 @@
           this.collegeListData.forEach(function (item,index) {
             if(item.collegeId===data){
               _this.collegeNames = item.collegeName
-              _this.checkTotalFun(_this.$refs.dateValue.value,item.collegeId)
+              _this.checkTotalFun(_this.searchDateValue,item.collegeId)
             }
           })
         },
@@ -310,7 +311,9 @@
             instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             descOrAsc:descOrAsc,
-            orderBy:data.prop
+            orderBy:data.prop,
+            pageNo:this.pageNo,
+            pageSize:10
           }
           this.getTableData(params)
         },

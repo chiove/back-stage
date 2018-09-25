@@ -73,6 +73,7 @@
           <el-date-picker
             @change="selectDateFun"
             v-model="selectDate"
+            value-format="yyyy-MM"
             type="month"
             size="mini"
             placeholder="选择月">
@@ -339,8 +340,8 @@
       /*时间选择查询*/
       selectDateFun(){
         if(this.selectDate){
-          this.year = this.selectDate.getFullYear()
-          this.month = this.selectDate.getMonth()+1
+          this.year = this.selectDate.substring(0,4)
+          this.month = this.selectDate.substring(5,this.selectDate.length)
         }
         if(this.activeName ==='first'){
           this.getAlCareListData()

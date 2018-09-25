@@ -5,7 +5,7 @@
       <span>晚归考勤分析系统</span>
     </div>
     <div class="main">
-      <el-form :model="ruleForm" :rules="rules2" ref="ruleForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
+      <el-form :model="ruleForm" :rules="rulesState?rules2:''" ref="ruleForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
         <div class="title"><h3>系统登录</h3></div>
         <el-form-item prop="account">
           <el-input type="text" v-model="ruleForm.account" auto-complete="off" placeholder="账号" v-on:keyup.enter="handleSubmit2"></el-input>
@@ -66,6 +66,7 @@
             { required: true, message: '密码不能为空！', trigger: 'change' },
           ]
         },
+        rulesState:false,
         see:true,  //密码是否可见
         ifmd5:false
       };
@@ -81,6 +82,7 @@
       },
       // 登录
       handleSubmit2(ev) {
+        this.rulesState=true
         var self = this;
         self.$refs.ruleForm.validate((valid) => {
           if (valid) {
@@ -115,6 +117,9 @@
                 self.logining = false;
                 self.$message.error(res.data.message);
               }
+            }).catch(function (error) {
+              self.logining = false;
+              self.$message.error('请求错误');
             })
           } else {
             self.logining = false;

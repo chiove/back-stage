@@ -182,7 +182,7 @@
             userId:this.userId,
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            instructorId:this.$refs.instructorValue.value,
+            instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
           }
           this.getTableData(params)
@@ -215,10 +215,12 @@
             userId:this.userId,
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            instructorId:this.$refs.instructorValue.value,
+            instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             descOrAsc:descOrAsc,
-            orderBy:data.prop
+            orderBy:data.prop,
+            pageNo:this.pageNo,
+            pageSize:10
           }
           this.getTableData(params)
         },
@@ -237,7 +239,7 @@
             userId:this.userId,
             buildingId:this.$refs.buildDom.value,
             orgId:this.$refs.collegeValue.value,
-            instructorId:this.$refs.instructorValue.value,
+            instructor:this.$refs.instructorValue.value,
             nameOrCode:this.$refs.studentNameDom.value,
             pageNo:val,
             pageSize:10

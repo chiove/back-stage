@@ -305,7 +305,9 @@
             instructorId: this.$refs.instructorValue.value,
             nameOrCode: this.$refs.studentNameDom.value,
             descOrAsc: descOrAsc,
-            orderBy: data.prop
+            orderBy: data.prop,
+            pageNo:this.pageNo,
+            pageSize:10
           }
           if (this.tabActive === 'first') {
             this.getTableData(params)
