@@ -2,9 +2,9 @@
   <div class="top">
     <div class="top_logo">
       <a :href="gotoIndex"><img class="top_logo_yh" src="../../assets/images/logo.png"></a>
-      <el-popover ref="popover5" placement="top" width="884"   trigger="hover" v-model="visible">
+      <!--<el-popover ref="popover5" placement="top" width="884"   trigger="hover" v-model="visible">
         <v-all></v-all>
-      </el-popover>
+      </el-popover>-->
       <el-button v-popover:popover5></el-button>
     </div>
     <div class="top_right_h3">
