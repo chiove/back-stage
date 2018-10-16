@@ -38,6 +38,7 @@
         <el-input placeholder="请输入学号/姓名搜索" ref="studentNameDom" v-model="studentNameValue" class="input-with-select" size="mini">
         </el-input>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="searchSubmitFun">搜索</el-button>
+        <el-button  size="mini" @click="resetFormValue">重置</el-button>
       </div>
     </div>
     <div class="daily-data-table-container">
@@ -97,6 +98,7 @@
       data(){
         return {
           userId:'',/*用户ID*/
+          orgId:'',/*学院ID*/
           collegeListDataValue:'',/*学院下拉列表默认值*/
           collegeListData:[],/*学院下拉列表*/
           majorListDataValue:'',/*专业下拉列表默认值*/
@@ -129,6 +131,8 @@
         /*学院下拉选择后触发事件*/
         collegeSelectFun:function(data){
           const _this = this
+          this.orgId = data
+          this.getInstuctorList()
           this.collegeListData.forEach(function (item,index) {
             if(item.collegeId===data){
               _this.collegeNames = item.collegeName
@@ -186,6 +190,15 @@
             nameOrCode:this.$refs.studentNameDom.value,
           }
           this.getTableData(params)
+        },
+        /*清空值*/
+        resetFormValue(){
+          this.collegeListDataValue = ''
+          this.buildListDataValue = ''
+          this.instructorListDataValue = ''
+          this.studentNameValue = ''
+          this.orgId = ''
+          this.getInstuctorList()
         },
         /*表格查询*/
         getTableData:function(params){
@@ -251,7 +264,8 @@
           const _this = this
           this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all',{
             params:{
-              userId:this.userId
+              userId:this.userId,
+              orgId:this.orgId
             }
           }).then(function (res) {
             if(res){

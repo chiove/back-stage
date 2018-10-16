@@ -86,6 +86,7 @@
           <el-input placeholder="请输入学号/姓名搜索" ref="studentNameDom" v-model="studentNameValue" class="input-with-select" size="mini">
           </el-input>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="searchSubmitFun">搜索</el-button>
+          <el-button  size="mini" @click="resetFormValue">重置</el-button>
         </div>
       </div>
       <div class="daily-data-table-container">
@@ -160,6 +161,7 @@
             lastNightStayoutLateNum:0,/*晚归人数*/
             lastNightStayoutNum:0,/*未归人数*/
             userId:'',/*用户ID*/
+            orgId:'',/*学院ID*/
             searchDateValue:'',/*初始化为昨天时间*/
             collegeListDataValue:'',/*学院下拉列表默认值*/
             collegeListData:[],/*学院下拉列表*/
@@ -222,6 +224,8 @@
         /*学院下拉选择后触发事件*/
         collegeSelectFun:function(data){
           const _this = this
+          this.orgId = data
+          this.getInstuctorList()
           this.collegeListData.forEach(function (item,index) {
             if(item.collegeId===data){
               _this.collegeNames = item.collegeName
@@ -263,6 +267,15 @@
             clockStatus:this.searchStatus
           }
           this.getTableData(params)
+        },
+        /*清空值*/
+        resetFormValue(){
+          this.collegeListDataValue = ''
+          this.searchStatus = ''
+          this.instructorListDataValue = ''
+          this.studentNameValue = ''
+          this.orgId = ''
+          this.getInstuctorList()
         },
         /*表格查询*/
         getTableData:function(params){
@@ -348,7 +361,8 @@
           const _this = this
           this.$axios.get(process.env.API_HOST+'/select-data/instructor-info/all',{
             params:{
-              userId:this.userId,
+              userId:_this.userId,
+              orgId:_this.orgId
             }
           }).then(function (res) {
             if(res){

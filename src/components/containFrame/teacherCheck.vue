@@ -14,6 +14,7 @@
         <el-input placeholder="请输入工号/姓名搜索" ref="studentNameDom" v-model="teacherNameValue" class="input-with-select" size="mini">
         </el-input>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="searchSubmitFun">搜索</el-button>
+        <el-button  size="mini" @click="resetFormValue">重置</el-button>
       </div>
     </div>
     <div class="daily-data-table-container">
@@ -142,6 +143,11 @@
           nameOrCode:this.$refs.studentNameDom.value,
         }
         this.getTableData(params)
+      },
+      /*清空值*/
+      resetFormValue(){
+        this.collegeListDataValue = ''
+        this.studentNameValue = ''
       },
       /*表格查询*/
       getTableData:function(params){
